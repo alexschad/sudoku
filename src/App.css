@@ -1,0 +1,180 @@
+.App {
+  text-align: center;
+  height: 100vh;
+}
+
+.App-header {
+  background-color: #282c34;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+}
+
+.solving {
+  opacity: 0.5;
+}
+
+.board {
+  display: grid;
+  grid-template:
+    1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr / 
+    1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  height: 50vw;
+  max-height: 800px;
+  width: 50vw;
+  max-width: 800px;
+  margin: 20px;
+}
+
+.field {
+  background: rgb(237 255 91);
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: blue;
+  font-size: 2em;
+}
+
+.field.highlight {
+  background: rgb(255, 225, 58);
+}
+
+.field.errHighlight {
+  background: rgb(255, 175, 150);
+}
+
+.field.errNumber {
+  color: red;
+}
+
+.field.fixed {
+  color: black;
+}
+
+.top {
+  border-top: 4px solid black;
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+.topleft {
+  border-top: 4px solid black;
+  border-left: 4px solid black;
+  border-bottom: 1px solid black;
+}
+
+.topright {
+  border-top: 4px solid black;
+  border-right: 4px solid black;
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+.bottom {
+  border-bottom: 4px solid black;
+  border-left: 1px solid black;
+}
+
+.bottomleft {
+  border-left: 4px solid black;
+  border-bottom: 4px solid black;
+}
+
+.bottomright {
+  border-bottom: 4px solid black;
+  border-right: 4px solid black;
+  border-left: 1px solid black;
+}
+
+.left {
+  border-left: 4px solid black;
+  border-bottom: 1px solid black;
+}
+.right {
+  border-right: 4px solid black;
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+.field.over {
+  background: rgb(248, 201, 72);
+}
+
+#numberSelectorContainer {
+  position: absolute;
+}
+
+.numberSelector {
+  display: grid;
+  width: 15vw;
+  max-width: 200px;
+  height: 15vw;
+  max-height: 200px;
+  background-color: white;
+  border: 1px solid black;
+  font-size: calc(10px + 2vmin);
+  grid-template:
+    1fr 1fr 1fr  / 
+    1fr 1fr 1fr;
+}
+
+.numberSelector > div {
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.numberSelector > div:hover {
+  background-color: aquamarine;
+}
+
+.selectorClose {
+  position: absolute;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 50%;
+  width: 0.8em;
+  height: 0.8em;
+  font-size: .5em;
+  padding: 5px;
+  top: -0.5em;
+  left: -0.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.selectorClose:hover {
+  background-color: aquamarine;
+}
+
+.gone {
+  display: none;
+}
+
+.code {
+  width: 70vw;
+  overflow-wrap: anywhere;
+}
+
+.menu {
+  margin: 20px;
+}

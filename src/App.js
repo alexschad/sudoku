@@ -42,7 +42,6 @@ function App() {
   useEffect(() => {
     if (isSolving === false) return;
     const solved = solve(fields, fields);
-    // const solved = await solvePromise(fields);
     setFields(solved);
     setIsSolving(false);
   }, [isSolving, fields]);
@@ -80,6 +79,39 @@ function App() {
     setErrHightlight(errh);
   }, [fields]);
 
+  const solveOne = () => {
+    const ones = fields.map((field,index) => {
+      const row = rows.find(r => r.includes(index));
+      const col = cols.find(c => c.includes(index));
+      const square = squares.find(s => s.includes(index));
+      const usedIndices = (row && col && square) ? row.concat(col).concat(square) : [];
+      let usedVals = usedIndices.map(ui => fields[ui]).filter(i => i !== null);
+      usedVals = new Set(usedVals);  
+      usedVals = [...usedVals];
+      return ([index, usedVals]);
+    }).filter(
+      (o) => {
+        return o[1].length === 8 && fields[o[0]] === null;    
+      }
+    );
+    if (ones.length > 0) {
+      const sol = ones[Math.floor(Math.random() * ones.length)];
+      sol[1] = [1,2,3,4,5,6,7,8,9].filter(x => !sol[1].includes(x))[0];
+      const newFields = [...fields];
+      newFields[sol[0]] = sol[1];
+      setFields(newFields);
+    } else {
+      // no smart solution so we use brute force
+      const solved = solve(fields, fields);
+      const nullIndices = fields.map((f,i) => i).filter(i => fields[i] === null);
+      const solIndex = nullIndices[Math.floor(Math.random() * nullIndices.length)];
+      const sol = [solIndex, solved[solIndex]];
+      const newFields = [...fields];
+      newFields[sol[0]] = sol[1];
+      setFields(newFields);
+    }
+  }
+
   return (
     <div className="App">
       <div className={isSolving ? 'container solving' : 'container'}>
@@ -105,6 +137,7 @@ function App() {
         <div className="menu">
           <button onClick={load}>Load</button>
           <button onClick={startSolve}>Start Solving</button>
+          <button onClick={solveOne}>Solve One</button>
           <button onClick={() => setShowJSON(!showJSON)}>Show JSON</button>
           <button onClick={clear}>Clear</button>
           <input type="checkbox" name="showHint" id="showHint" checked={showHints}

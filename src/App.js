@@ -17,6 +17,7 @@ function App() {
   const [showJSON, setShowJSON] = useState(false);
   const [isSolving, setIsSolving] = useState(false);
   const [sudokuIndex, setSudokuIndex] = useState(null);
+  const [showHints, setShowHints] = useState(false);
 
   const clear = () => {
     setFields(Array(81).fill(null));
@@ -88,9 +89,10 @@ function App() {
             <Field
               key={i}
               index={i}
-              value={fields[i]}
+              fields={fields}
               sudokuIndex={sudokuIndex}
               showSelector={showSelector}
+              showHints={showHints}
               mouseEnter={mouseEnter}
               mouseLeave={mouseLeave}
               highlight={highlight.includes(i)}
@@ -105,6 +107,9 @@ function App() {
           <button onClick={startSolve}>Start Solving</button>
           <button onClick={() => setShowJSON(!showJSON)}>Show JSON</button>
           <button onClick={clear}>Clear</button>
+          <input type="checkbox" name="showHint" id="showHint" checked={showHints}
+            onChange={(e) => setShowHints(e.target.checked)}
+            />
         </div>
           <div className={showJSON ? 'code' : 'gone'}>{JSON.stringify(fields)}</div>
         <NumberSelector

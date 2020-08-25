@@ -41,6 +41,7 @@
 }
 
 .field {
+  position: relative;
   background: rgb(237 255 91);
   border-left: 1px solid black;
   border-bottom: 1px solid black;
@@ -118,6 +119,14 @@
 
 #numberSelectorContainer {
   position: absolute;
+}
+
+.field > .hint {
+  font-size: calc(5px + 1vmin);
+  color: red;
+  position: absolute;
+  top: 1px;
+  right: 2px;
 }
 
 .numberSelector {

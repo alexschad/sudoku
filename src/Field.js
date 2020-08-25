@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react'
-import { sudokus } from './data';
+import React, { useState, useEffect, useMemo } from 'react'
+import { rows, cols, squares, sudokus } from './data';
 
 const top = [0,1,2,3,4,5,6,7,8,
   27,28,29,30,31,32,33,34,35,
@@ -48,19 +48,31 @@ const getFieldClass = (index, isFixed, over, highlight, errHighlight, errNumber)
   return classes.join(' ');
 };
 
-export default function Field({index, value, sudokuIndex, showSelector, mouseEnter, mouseLeave, over, highlight=false, errHighlight=false, errNumber=false}) {
+export default function Field({index, fields, sudokuIndex, showSelector, showHints, mouseEnter, mouseLeave, over, highlight=false, errHighlight=false, errNumber=false}) {
+  const [usedVals, setUsedVals] = useState([]);
 
-  const isFixed = sudokuIndex !== null ? sudokus[sudokuIndex][index] !== null : false;
-
+  const isFixed = sudokuIndex !== null ? sudokus[sudokuIndex][index] !== null : false;  
   const cssClass = useMemo(() => getFieldClass(index, isFixed, over, highlight, errHighlight, errNumber),
-  [index, isFixed, over, highlight, errHighlight, errNumber]);
+  [index, isFixed, over, highlight, errHighlight, errNumber]);  
+
+  useEffect(() => {
+    const row = rows.find(r => r.includes(index));
+    const col = cols.find(c => c.includes(index));
+    const square = squares.find(s => s.includes(index));
+    const usedIndices = (row && col && square) ? row.concat(col).concat(square) : [];
+    let usedVals = usedIndices.map(ui => fields[ui]).filter(i => i !== null);
+    usedVals = new Set(usedVals);  
+    usedVals = [...usedVals];
+    setUsedVals(usedVals);
+  },[index, fields]);
 
   return (
     <div className={cssClass}
       onMouseEnter={() => mouseEnter(index)}
       onMouseLeave={() => mouseLeave()}
       onClick={isFixed ? () => {} : (e) => showSelector(e, index)}>
-      {value}
+      {fields[index]}
+      {!isFixed && showHints && fields[index] === null ? <div className="hint">{9 - usedVals.length}</div> : ''}
     </div>
   )
 }

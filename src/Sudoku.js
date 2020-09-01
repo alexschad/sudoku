@@ -6,7 +6,7 @@ import { rows, cols, squares, sudokus } from './data';
 import { solve, checkValid } from './util';
 
 
-function App() {
+function Sudoku() {
   const [fields, setFields] = useState(Array(81).fill(null));
   const [highlight, setHightlight] = useState([]);
   const [errHighlight, setErrHightlight] = useState([]);
@@ -113,9 +113,9 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <div className="Sudoku">
       <div className={isSolving ? 'container solving' : 'container'}>
-      <header className="App-header">Sudoku Helper</header>
+      <header className="Sudoku-header">Sudoku Helper</header>
         <div className="board">
           {fields.map((f,i) => 
             <Field
@@ -157,4 +157,4 @@ function App() {
   );
 }
 
-export default App;
+export default Sudoku;

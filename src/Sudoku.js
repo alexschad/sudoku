@@ -14,13 +14,17 @@ function Sudoku() {
   const [over, setOver] = useState();
   const [clicked, setClicked] = useState(null);
   const [selPos, setSelPos] = useState([0,0]);
-  const [showJSON, setShowJSON] = useState(false);
   const [isSolving, setIsSolving] = useState(false);
+  const [isSolved, setIsSolved] = useState(false);
   const [sudokuIndex, setSudokuIndex] = useState(null);
   const [showHints, setShowHints] = useState(false);
 
   const clear = () => {
     setFields(Array(81).fill(null));
+  }
+
+  const reset = () => {
+    setFields(sudokus[sudokuIndex]);
   }
 
   const load = () => {
@@ -45,6 +49,11 @@ function Sudoku() {
     setFields(solved);
     setIsSolving(false);
   }, [isSolving, fields]);
+
+  useEffect(() => {
+    const solved = fields.filter(i => i === null).length === 0;
+    setIsSolved(solved);
+  }, [fields]);
 
   const mouseEnter = (index) => {
     const newHighlight = [
@@ -116,6 +125,7 @@ function Sudoku() {
     <div className="Sudoku">
       <div className={isSolving ? 'container solving' : 'container'}>
       <header className="Sudoku-header">Sudoku Helper</header>
+      {isSolved ? <div className="success" onClick={() => setIsSolved(false)}>Congratulations you solved the sudoku!</div> : null}
         <div className="board">
           {fields.map((f,i) => 
             <Field
@@ -138,13 +148,10 @@ function Sudoku() {
           <button onClick={load}>Load</button>
           <button onClick={startSolve}>Start Solving</button>
           <button onClick={solveOne}>Solve One</button>
-          <button onClick={() => setShowJSON(!showJSON)}>Show JSON</button>
           <button onClick={clear}>Clear</button>
-          <input type="checkbox" name="showHint" id="showHint" checked={showHints}
-            onChange={(e) => setShowHints(e.target.checked)}
-            />
+          <button onClick={reset}>Reset</button>
+          <button onClick={(e) => setShowHints(!showHints)}>{showHints ? 'Hide' : 'Show'} Hints</button>
         </div>
-          <div className={showJSON ? 'code' : 'gone'}>{JSON.stringify(fields)}</div>
         <NumberSelector
           selectNumber={selectNumber}
           clicked={clicked}

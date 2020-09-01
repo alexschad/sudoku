@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './App.css';
+import './Sudoku.css';
 import Field from './Field';
 import NumberSelector from './NumberSelector';
 import { rows, cols, squares, sudokus } from './data';

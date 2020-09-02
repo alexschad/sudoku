@@ -50,8 +50,12 @@ const getFieldClass = (index, isFixed, over, highlight, errHighlight, errNumber)
 
 export default function Field({index, fields, sudokuIndex, showSelector, showHints, mouseEnter, mouseLeave, over, highlight=false, errHighlight=false, errNumber=false}) {
   const [usedVals, setUsedVals] = useState([]);
+  const [isFixed, setIsFixed] = useState([]);
 
-  const isFixed = sudokuIndex !== null ? sudokus[sudokuIndex][index] !== null : false;  
+  useEffect(() => {
+    setIsFixed(sudokuIndex !== null ? sudokus[sudokuIndex][index] !== null : false);
+  },[sudokuIndex, index]);
+
   const cssClass = useMemo(() => getFieldClass(index, isFixed, over, highlight, errHighlight, errNumber),
   [index, isFixed, over, highlight, errHighlight, errNumber]);  
 

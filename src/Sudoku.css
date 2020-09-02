@@ -233,6 +233,7 @@ button:hover {
   margin: 20px;
   display: flex;
   width: 60%;
+  max-width: 800px;
 }
 
 .menu > * {

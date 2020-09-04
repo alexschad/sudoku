@@ -11,6 +11,7 @@ const left = [0,3,6,9,12,15,18,
 const right = [8,17,26,35,44,53,62,71,80];
 
 const getFieldClass = (index, isFixed, over, highlight, errHighlight, errNumber) => {
+  // computes the css class for the fields to color it correctly and show the correct borders to create the grid
   const classes = ['field'];
   if (over) classes.push('over');
   if (highlight) classes.push('highlight');
@@ -48,6 +49,7 @@ const getFieldClass = (index, isFixed, over, highlight, errHighlight, errNumber)
   return classes.join(' ');
 };
 
+// a single field of the sudoku
 export default function Field({index, fields, sudokuIndex, showSelector, showHints, mouseEnter, mouseLeave, over, highlight=false, errHighlight=false, errNumber=false}) {
   const [usedVals, setUsedVals] = useState([]);
   const [isFixed, setIsFixed] = useState([]);
@@ -56,6 +58,7 @@ export default function Field({index, fields, sudokuIndex, showSelector, showHin
     setIsFixed(sudokuIndex !== null ? sudokus[sudokuIndex][index] !== null : false);
   },[sudokuIndex, index]);
 
+  // the getFieldClass function is quite expensive so we memo it
   const cssClass = useMemo(() => getFieldClass(index, isFixed, over, highlight, errHighlight, errNumber),
   [index, isFixed, over, highlight, errHighlight, errNumber]);  
 

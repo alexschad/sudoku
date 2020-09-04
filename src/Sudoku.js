@@ -6,6 +6,7 @@ import { rows, cols, squares, sudokus } from './data';
 import { solve, checkValid } from './util';
 
 
+//main Module that shows the Fields, the Menu and the Number selector
 function Sudoku() {
   const [fields, setFields] = useState(Array(81).fill(null));
   const [highlight, setHightlight] = useState([]);
@@ -19,14 +20,17 @@ function Sudoku() {
   const [sudokuIndex, setSudokuIndex] = useState(null);
   const [showHints, setShowHints] = useState(false);
 
+  // clears all fields
   const clear = () => {
     setFields(Array(81).fill(null));
   }
 
+  // clears all user selected fields. resets to the current sudoku
   const reset = () => {
     setFields(sudokus[sudokuIndex]);
   }
 
+  // randomly loads one of the stored sudokus
   const load = () => {
     setSudokuIndex(Math.floor(Math.random() * sudokus.length));
   }
@@ -39,6 +43,7 @@ function Sudoku() {
     }
   }, [sudokuIndex]);
 
+  // start to solve the whole sudoku
   const startSolve = async () => {
     setIsSolving(true);
   }
@@ -55,6 +60,7 @@ function Sudoku() {
     setIsSolved(solved);
   }, [fields]);
 
+  // set the row, column and block highlights on mouseover
   const mouseEnter = (index) => {
     const newHighlight = [
       ...rows.find(r => r.includes(index)),
@@ -65,11 +71,13 @@ function Sudoku() {
     setOver(index);
   };
   
+  // resets the highlights
   const mouseLeave = () => {
     setHightlight([]);
     setOver(null);
   };
 
+  // sets a number in a field called by the number selector
   const selectNumber = (clicked, value) => {
     const newFields = [...fields];
     newFields[clicked] = value;
@@ -77,6 +85,7 @@ function Sudoku() {
     setClicked(null);
   }
 
+  // shows and places the number selector
   const showSelector = (e, index) => {
     setClicked(index);
     setSelPos([e.clientX, e.clientY]);
@@ -88,6 +97,7 @@ function Sudoku() {
     setErrHightlight(errh);
   }, [fields]);
 
+  // solve only one field
   const solveOne = () => {
     const ones = fields.map((field,index) => {
       const row = rows.find(r => r.includes(index));
@@ -104,6 +114,7 @@ function Sudoku() {
       }
     );
     if (ones.length > 0) {
+      // try a smart solution
       const sol = ones[Math.floor(Math.random() * ones.length)];
       sol[1] = [1,2,3,4,5,6,7,8,9].filter(x => !sol[1].includes(x))[0];
       const newFields = [...fields];

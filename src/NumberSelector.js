@@ -1,6 +1,7 @@
 import React from 'react'
 import { rows, cols, squares } from './data';
 
+// Popup to select a number for a field. shows only the available numbers
 export default function NumberSelector({clicked, setClicked, selectNumber, selPos, fields}) {
   const row = rows.find(r => r.includes(clicked));
   const col = cols.find(c => c.includes(clicked));

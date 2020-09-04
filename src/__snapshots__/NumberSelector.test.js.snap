@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`it renders 1`] = `
+<div
+  id="numberSelectorContainer"
+  style={
+    Object {
+      "display": "block",
+      "left": "0px",
+      "top": "0px",
+    }
+  }
+>
+  <div
+    className="numberSelector"
+    onMouseLeave={[Function]}
+  >
+    <div
+      className="selectorClose"
+      onClick={[Function]}
+    >
+      X
+    </div>
+    <div
+      onClick={[Function]}
+    >
+      1
+    </div>
+    <div
+      onClick={[Function]}
+    >
+      2
+    </div>
+    <div
+      onClick={[Function]}
+    >
+      3
+    </div>
+    <div
+      onClick={[Function]}
+    >
+      4
+    </div>
+    <div
+      onClick={[Function]}
+    >
+      5
+    </div>
+    <div
+      onClick={[Function]}
+    >
+      6
+    </div>
+    <div
+      onClick={[Function]}
+    >
+      7
+    </div>
+    <div
+      onClick={[Function]}
+    >
+      8
+    </div>
+    <div
+      onClick={[Function]}
+    >
+      9
+    </div>
+  </div>
+</div>
+`;

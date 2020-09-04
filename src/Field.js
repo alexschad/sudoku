@@ -52,7 +52,7 @@ const getFieldClass = (index, isFixed, over, highlight, errHighlight, errNumber)
 // a single field of the sudoku
 export default function Field({index, fields, sudokuIndex, showSelector, showHints, mouseEnter, mouseLeave, over, highlight=false, errHighlight=false, errNumber=false}) {
   const [usedVals, setUsedVals] = useState([]);
-  const [isFixed, setIsFixed] = useState([]);
+  const [isFixed, setIsFixed] = useState(false);
 
   useEffect(() => {
     setIsFixed(sudokuIndex !== null ? sudokus[sudokuIndex][index] !== null : false);

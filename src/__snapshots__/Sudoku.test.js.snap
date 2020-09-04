@@ -1,0 +1,771 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`it renders 1`] = `
+<div
+  className="Sudoku"
+>
+  <div
+    className="container"
+  >
+    <header
+      className="Sudoku-header"
+    >
+      Sudoku Helper
+    </header>
+    <div
+      className="board"
+    >
+      <div
+        className="field topleft"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field top"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field top"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field topleft"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field top"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field top"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field topleft"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field top"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field topright"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field left"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field left"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field left"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field right"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field left"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field left"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field left"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field right"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field topleft"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field top"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field top"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field topleft"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field top"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field top"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field topleft"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field top"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field topright"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field left"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field left"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field left"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field right"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field left"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field left"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field left"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field right"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field topleft"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field top"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field top"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field topleft"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field top"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field top"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field topleft"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field top"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field topright"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field left"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field left"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field left"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field right"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field bottomleft"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field bottom"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field bottom"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field bottomleft"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field bottom"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field bottom"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field bottomleft"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field bottom"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+      <div
+        className="field bottomright"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        
+      </div>
+    </div>
+    <div
+      className="menu"
+    >
+      <button
+        onClick={[Function]}
+      >
+        Load
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        Start Solving
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        Solve One
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        Clear
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        Reset
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        Show
+         Hints
+      </button>
+    </div>
+    <div
+      id="numberSelectorContainer"
+      style={
+        Object {
+          "display": "none",
+          "left": "0px",
+          "top": "0px",
+        }
+      }
+    >
+      <div
+        className="numberSelector"
+        onMouseLeave={[Function]}
+      >
+        <div
+          className="selectorClose"
+          onClick={[Function]}
+        >
+          X
+        </div>
+        <div
+          onClick={[Function]}
+        >
+          1
+        </div>
+        <div
+          onClick={[Function]}
+        >
+          2
+        </div>
+        <div
+          onClick={[Function]}
+        >
+          3
+        </div>
+        <div
+          onClick={[Function]}
+        >
+          4
+        </div>
+        <div
+          onClick={[Function]}
+        >
+          5
+        </div>
+        <div
+          onClick={[Function]}
+        >
+          6
+        </div>
+        <div
+          onClick={[Function]}
+        >
+          7
+        </div>
+        <div
+          onClick={[Function]}
+        >
+          8
+        </div>
+        <div
+          onClick={[Function]}
+        >
+          9
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

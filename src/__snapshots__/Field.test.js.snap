@@ -1,0 +1,103 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`it renders bottom center 1`] = `
+<div
+  className="field highlight bottom"
+  onClick={[Function]}
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+>
+  9
+  
+</div>
+`;
+
+exports[`it renders bottom left 1`] = `
+<div
+  className="field highlight bottomleft"
+  onClick={[Function]}
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+>
+  
+</div>
+`;
+
+exports[`it renders bottom right 1`] = `
+<div
+  className="field highlight bottomright"
+  onClick={[Function]}
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+>
+  
+</div>
+`;
+
+exports[`it renders center left 1`] = `
+<div
+  className="field highlight left"
+  onClick={[Function]}
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+>
+  7
+  
+</div>
+`;
+
+exports[`it renders center right 1`] = `
+<div
+  className="field highlight right fixed"
+  onClick={[Function]}
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+>
+  7
+  
+</div>
+`;
+
+exports[`it renders top center 1`] = `
+<div
+  className="field highlight topleft"
+  onClick={[Function]}
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+>
+  
+</div>
+`;
+
+exports[`it renders top center 2`] = `
+<div
+  className="field highlight top"
+  onClick={[Function]}
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+>
+  
+</div>
+`;
+
+exports[`it renders top left 1`] = `
+<div
+  className="field highlight topleft"
+  onClick={[Function]}
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+>
+  
+</div>
+`;
+
+exports[`it renders top right 1`] = `
+<div
+  className="field highlight topright"
+  onClick={[Function]}
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+>
+  
+</div>
+`;

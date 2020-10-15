@@ -1,14 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Sudoku.css';
 import Field from './Field';
 import NumberSelector from './NumberSelector';
 import { rows, cols, squares, sudokus } from './data';
 import { solve, checkValid } from './util';
 
-
 //main Module that shows the Fields, the Menu and the Number selector
 function Sudoku() {
-  const [fields, setFields] = useState(Array(81).fill(null));
+  const initialFields = () => {
+    const jsonFields = window.localStorage.getItem("sudokuFields");
+    if (!jsonFields) return Array(81).fill(null);
+    return JSON.parse(jsonFields);
+  }
+  const initialSudoKuIndex = () => {
+    const sudokuIndex = window.localStorage.getItem("sudokuIndex");
+    if (!sudokuIndex) return null;
+    return JSON.parse(sudokuIndex);
+  }
+  const [fields, setFields] = useState(initialFields);
   const [highlight, setHightlight] = useState([]);
   const [errHighlight, setErrHightlight] = useState([]);
   const [errNumber, setErrNumber] = useState([]);
@@ -17,8 +26,12 @@ function Sudoku() {
   const [selPos, setSelPos] = useState([0,0]);
   const [isSolving, setIsSolving] = useState(false);
   const [isSolved, setIsSolved] = useState(false);
-  const [sudokuIndex, setSudokuIndex] = useState(null);
+  const [sudokuIndex, setSudokuIndex] = useState(initialSudoKuIndex);
   const [showHints, setShowHints] = useState(false);
+
+  const isFirstRenderRef = useRef(true);
+
+  useEffect(() => window.localStorage.setItem('sudokuFields', JSON.stringify(fields)), [fields]);
 
   // clears all fields
   const clear = () => {
@@ -36,12 +49,18 @@ function Sudoku() {
   }
 
   useEffect(() => {
+    if (isFirstRenderRef.current) return;
     if (sudokuIndex !== null) {
       setFields(sudokus[sudokuIndex]);
     } else {
       clear();
     }
-  }, [sudokuIndex]);
+    window.localStorage.setItem('sudokuIndex', JSON.stringify(sudokuIndex));
+  }, [sudokuIndex, isFirstRenderRef]);
+
+  useEffect(() => {
+    isFirstRenderRef.current = false;
+  }, []);
 
   // start to solve the whole sudoku
   const startSolve = async () => {

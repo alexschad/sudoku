@@ -94,7 +94,6 @@ function Sudoku() {
     undefined,
     initialSudoku
   );
-  // const [fields, setFields] = useState(initialFields);
   const [highlight, setHightlight] = useState([]);
   const [errHighlight, setErrHightlight] = useState([]);
   const [errNumber, setErrNumber] = useState([]);
@@ -103,7 +102,6 @@ function Sudoku() {
   const [selPos, setSelPos] = useState([0,0]);
   const [isSolving, setIsSolving] = useState(false);
   const [isSolved, setIsSolved] = useState(false);
-  // const [sudokuIndex, setSudokuIndex] = useState(initialSudoKuIndex);
   const [showHints, setShowHints] = useState(false);
 
   const isFirstRenderRef = useRef(true);

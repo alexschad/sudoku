@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { rows, cols, squares, sudokus } from './data';
+import { rows, cols, squares } from './data';
 
 const top = [0,1,2,3,4,5,6,7,8,
   27,28,29,30,31,32,33,34,35,
@@ -50,13 +50,13 @@ const getFieldClass = (index, isFixed, over, highlight, errHighlight, errNumber)
 };
 
 // a single field of the sudoku
-export default function Field({index, fields, sudokuIndex, showSelector, showHints, mouseEnter, mouseLeave, over, highlight=false, errHighlight=false, errNumber=false}) {
+export default function Field({index, fields, sudoku, showSelector, showHints, mouseEnter, mouseLeave, over, highlight=false, errHighlight=false, errNumber=false}) {
   const [usedVals, setUsedVals] = useState([]);
   const [isFixed, setIsFixed] = useState(false);
 
   useEffect(() => {
-    setIsFixed(sudokuIndex !== null ? sudokus[sudokuIndex][index] !== null : false);
-  },[sudokuIndex, index]);
+    setIsFixed(sudoku !== null ? sudoku[index] !== 0 : false);
+  },[sudoku, index]);
 
   // the getFieldClass function is quite expensive so we memo it
   const cssClass = useMemo(() => getFieldClass(index, isFixed, over, highlight, errHighlight, errNumber),
@@ -67,7 +67,7 @@ export default function Field({index, fields, sudokuIndex, showSelector, showHin
     const col = cols.find(c => c.includes(index));
     const square = squares.find(s => s.includes(index));
     const usedIndices = (row && col && square) ? row.concat(col).concat(square) : [];
-    let usedVals = usedIndices.map(ui => fields[ui]).filter(i => i !== null);
+    let usedVals = usedIndices.map(ui => fields[ui]).filter(i => i !== 0);
     usedVals = new Set(usedVals);  
     usedVals = [...usedVals];
     setUsedVals(usedVals);
@@ -78,8 +78,8 @@ export default function Field({index, fields, sudokuIndex, showSelector, showHin
       onMouseEnter={() => mouseEnter(index)}
       onMouseLeave={() => mouseLeave()}
       onClick={isFixed ? () => {} : (e) => showSelector(e, index)}>
-      {fields[index]}
-      {!isFixed && showHints && fields[index] === null ? <div className="hint">{9 - usedVals.length}</div> : ''}
+      {fields[index] !== 0 ? fields[index] : null}
+      {!isFixed && showHints && fields[index] === 0 ? <div className="hint">{9 - usedVals.length}</div> : ''}
     </div>
   )
 }

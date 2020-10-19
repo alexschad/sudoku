@@ -58,20 +58,20 @@ export const checkValid = boardsState => {
   const filledSquares = squares.map(s => s.map(si => boardsState[si]));
 
   const errRows = filledRows.map((fr, i) => {
-    const duplicates = dupes(fr.filter(it => it !== null));
-    const duplicateIndices = fr.map((a,i2) => duplicates.includes(a !== null && a.toString()) ? rows[i][i2] : null).filter(j => j !== null);
+    const duplicates = dupes(fr.filter(it => it !== 0));
+    const duplicateIndices = fr.map((a,i2) => duplicates.includes(a.toString()) ? rows[i][i2] : 0).filter(j => j !== 0);
     return [duplicateIndices, i];
   }).filter(fr => fr[0].length > 0);
 
   const errCols = filledCols.map((fr, i) => {
-    const duplicates = dupes(fr.filter(it => it !== null));
-    const duplicateIndices = fr.map((a,i2) => duplicates.includes(a !== null && a.toString()) ? cols[i][i2] : null).filter(j => j !== null);
+    const duplicates = dupes(fr.filter(it => it !== 0));
+    const duplicateIndices = fr.map((a,i2) => duplicates.includes(a.toString()) ? cols[i][i2] : 0).filter(j => j !== 0);
     return [duplicateIndices, i];
   }).filter(fr => fr[0].length > 0);
 
   const errSquares = filledSquares.map((fr, i) => {
-    const duplicates = dupes(fr.filter(it => it !== null));
-    const duplicateIndices = fr.map((a,i2) => duplicates.includes(a !== null && a.toString()) ? squares[i][i2] : null).filter(j => j !== null);
+    const duplicates = dupes(fr.filter(it => it !== 0));
+    const duplicateIndices = fr.map((a,i2) => duplicates.includes(a.toString()) ? squares[i][i2] : 0).filter(j => j !== 0);
     return [duplicateIndices, i];
   }).filter(fr => fr[0].length > 0);
 
@@ -97,17 +97,17 @@ export const checkValid = boardsState => {
 };
 
 const solveTCO = (arr, origArray, index = null) => {
-  if (arr.indexOf(null) === -1 && index === null) return arr;
-  const workIndex = index === null ? arr.indexOf(null) : index;
-  const val = arr[workIndex] === null ? 1 : arr[workIndex] + 1;
+  if (arr.indexOf(0) === -1 && index === null) return arr;
+  const workIndex = index === null ? arr.indexOf(0) : index;
+  const val = arr[workIndex] === 0 ? 1 : arr[workIndex] + 1;
   const newArr = [...arr];
   if (val > 9) {
-    newArr[workIndex] = null;
+    newArr[workIndex] = 0;
     // find last field worked on
     let lastIndex = 0;
     for (var x = workIndex-1; x >= 0; x--) {
       lastIndex = x;
-      if (origArray[x] === null) {
+      if (origArray[x] === 0) {
         break;
       }
     }

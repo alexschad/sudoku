@@ -229,6 +229,10 @@ button:hover {
 	background-color:#ffab23;
 }
 
+button.active {
+  border: 2px solid red;
+}
+
 .menu {
   margin: 20px;
   display: flex;

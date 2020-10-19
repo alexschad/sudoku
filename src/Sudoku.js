@@ -2,7 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import './Sudoku.css';
 import Field from './Field';
 import NumberSelector from './NumberSelector';
-import { rows, cols, squares, sudokus } from './data';
+import { rows, cols, squares } from './data';
+import easy from './easy';
+import medium from './medium';
+import hard from './hard';
 import { solve, checkValid } from './util';
 
 export const ACTIONS = {
@@ -15,22 +18,39 @@ export const ACTIONS = {
   SET_FIELD: 'set_field',
 };
 
+const SUDOKUS = {
+  easy,
+  medium,
+  hard,
+}
+
 const sudokuReducer = (state, action) => {
-  const { fields, sudokuIndex } = state;
+  const { type, fields, sudokuIndex } = state;
   switch (action.type) {
     // randomly loads one of the stored sudokus
     case ACTIONS.LOAD_RANDOM:
-      const newIndex = Math.floor(Math.random() * sudokus.length);
-      return {fields: sudokus[newIndex], sudokuIndex: newIndex};
-    // randomly loads one of the stored sudokus
+      let newType;
+      let newIndex;
+      let newFields;
+      if (action.payload === undefined) {
+        newType = ['easy', 'medium', 'hard'][Math.floor(Math.random() * 3)];
+        newIndex = Math.floor(Math.random() * SUDOKUS[newType].length);
+        newFields = SUDOKUS[newType][newIndex];
+      } else {
+        newType = action.payload.type;
+        newIndex = Math.floor(Math.random() * SUDOKUS[newType].length);
+        newFields = SUDOKUS[newType][newIndex];
+      }
+      return {type: newType, fields: newFields, sudokuIndex: newIndex};
+    // loads one of the stored sudokus
     case ACTIONS.LOAD:
-      return {fields: sudokus[action.payload.sudokuIndex], sudokuIndex: action.payload.sudokuIndex};
+      return {...state, fields: SUDOKUS[type][action.payload.sudokuIndex], sudokuIndex: action.payload.sudokuIndex};
     // clears all user selected fields. resets to the current sudoku
     case ACTIONS.RESET:
-      return {fields: sudokus[sudokuIndex], sudokuIndex: sudokuIndex};
+      return {...state, fields: SUDOKUS[type][sudokuIndex], sudokuIndex: sudokuIndex};
     // clears all fields
     case ACTIONS.CLEAR:
-      return {fields: Array(81).fill(null), sudokuIndex: null};
+      return {type: null, fields: Array(81).fill(0), sudokuIndex: null};
     // solve the sudoku
     case ACTIONS.SOLVE:
       const solved = solve(fields, fields);
@@ -42,13 +62,13 @@ const sudokuReducer = (state, action) => {
         const col = cols.find(c => c.includes(index));
         const square = squares.find(s => s.includes(index));
         const usedIndices = (row && col && square) ? row.concat(col).concat(square) : [];
-        let usedVals = usedIndices.map(ui => fields[ui]).filter(i => i !== null);
+        let usedVals = usedIndices.map(ui => fields[ui]).filter(i => i !== 0);
         usedVals = new Set(usedVals);  
         usedVals = [...usedVals];
         return ([index, usedVals]);
       }).filter(
         (o) => {
-          return o[1].length === 8 && fields[o[0]] === null;    
+          return o[1].length === 8 && fields[o[0]] === 0;
         }
       );
       if (ones.length > 0) {
@@ -61,7 +81,7 @@ const sudokuReducer = (state, action) => {
       } else {
         // no smart solution so we use brute force
         const solved = solve(fields, fields);
-        const nullIndices = fields.map((f,i) => i).filter(i => fields[i] === null);
+        const nullIndices = fields.map((f,i) => i).filter(i => fields[i] === 0);
         const solIndex = nullIndices[Math.floor(Math.random() * nullIndices.length)];
         const sol = [solIndex, solved[solIndex]];
         const newFields = [...fields];
@@ -71,9 +91,9 @@ const sudokuReducer = (state, action) => {
 
     // set one field with a number
     case ACTIONS.SET_FIELD:
-      const newFields = [...fields];
-      newFields[action.payload.clicked] = action.payload.value;
-      return {...state, fields: newFields};
+      const currentFields = [...fields];
+      currentFields[action.payload.clicked] = action.payload.value;
+      return {...state, fields: currentFields};
     default:
       return state;
   }
@@ -82,14 +102,16 @@ const sudokuReducer = (state, action) => {
 //main Module that shows the Fields, the Menu and the Number selector
 function Sudoku() {
   const initialSudoku = () => {
+    const sudokuTypeJSON = window.localStorage.getItem("sudokuType");
+    const type = sudokuTypeJSON ? JSON.parse(sudokuTypeJSON) : ['easy', 'medium', 'hard'][Math.floor(Math.random() * 3)];
     const sudokuIndexJSON = window.localStorage.getItem("sudokuIndex");
-    const sudokuIndex = sudokuIndexJSON ? JSON.parse(sudokuIndexJSON) : Math.floor(Math.random() * sudokus.length);
+    const sudokuIndex = sudokuIndexJSON ? JSON.parse(sudokuIndexJSON) : Math.floor(Math.random() * SUDOKUS[type].length);
     const sudokuFieldsJSON = window.localStorage.getItem("sudokuFields");
-    const fields = sudokuFieldsJSON ? JSON.parse(sudokuFieldsJSON) : Array(81).fill(null);
-    return {fields, sudokuIndex};
+    const fields = sudokuFieldsJSON ? JSON.parse(sudokuFieldsJSON) : Array(81).fill(0);
+    return {type, fields, sudokuIndex};
   };
 
-  const [{fields, sudokuIndex}, dispatch] = React.useReducer(
+  const [{type, fields, sudokuIndex}, dispatch] = React.useReducer(
     sudokuReducer,
     undefined,
     initialSudoku
@@ -106,6 +128,7 @@ function Sudoku() {
 
   const isFirstRenderRef = useRef(true);
 
+  useEffect(() => window.localStorage.setItem('sudokuType', JSON.stringify(type)), [type]);
   useEffect(() => window.localStorage.setItem('sudokuFields', JSON.stringify(fields)), [fields]);
 
   useEffect(() => {
@@ -134,7 +157,7 @@ function Sudoku() {
   }, [isSolving, fields]);
 
   useEffect(() => {
-    const solved = fields.filter(i => i === null).length === 0;
+    const solved = fields.filter(i => i === 0).length === 0;
     setIsSolved(solved);
   }, [fields]);
 
@@ -184,7 +207,7 @@ function Sudoku() {
               key={i}
               index={i}
               fields={fields}
-              sudokuIndex={sudokuIndex}
+              sudoku={type !== null && sudokuIndex!== null ? SUDOKUS[type][sudokuIndex] : null}
               showSelector={showSelector}
               showHints={showHints}
               mouseEnter={mouseEnter}
@@ -197,7 +220,10 @@ function Sudoku() {
           )}
         </div>
         <div className="menu">
-          <button onClick={() => dispatch({ type: ACTIONS.LOAD_RANDOM })}>Load</button>
+        <button onClick={() => dispatch({ type: ACTIONS.LOAD_RANDOM })}>Random</button>
+        <button onClick={() => dispatch({ type: ACTIONS.LOAD_RANDOM, payload: { type: 'easy' } })} className={type === 'easy' ? 'active' : null}>Easy</button>
+        <button onClick={() => dispatch({ type: ACTIONS.LOAD_RANDOM, payload: { type: 'medium' } })} className={type === 'medium' ? 'active' : null}>Medium</button>
+        <button onClick={() => dispatch({ type: ACTIONS.LOAD_RANDOM, payload: { type: 'hard' } })} className={type === 'hard' ? 'active' : null}>Hard</button>
           <button onClick={startSolve}>Start Solving</button>
           <button onClick={() => dispatch({ type: ACTIONS.SOLVE_ONE })}>Solve One</button>
           <button onClick={() => dispatch({ type: ACTIONS.CLEAR })}>Clear</button>

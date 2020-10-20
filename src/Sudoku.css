@@ -47,6 +47,36 @@
   margin: 20px;
 }
 
+.timerContainer {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 4em;
+  font-size: 1.5em;
+}
+
+
+.pause {
+    height: .8em;
+    border-style: double;
+    border-width: 0px 0px 0px .5em;
+    border-color: #202020;
+    top: 5px;
+    right: 10px;
+    position: relative;
+}
+
+.resume {
+  border-style: solid;
+  box-sizing: border-box;
+  border-width: 0.5em 0px 0.5em 1em;
+  border-color: transparent transparent transparent #202020;
+  position: absolute;
+  top: 2px;
+  right: 0px;
+}
+
 .pausedBoard::before {
   content: '';
   position: absolute;

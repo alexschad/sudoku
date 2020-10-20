@@ -6,7 +6,7 @@ import { rows, cols, squares } from './data';
 import easy from './easy';
 import medium from './medium';
 import hard from './hard';
-import { solve, checkValid } from './util';
+import { solve, checkValid, formatTime } from './util';
 
 export const ACTIONS = {
   LOAD_RANDOM: 'load_random',
@@ -237,7 +237,10 @@ function Sudoku() {
     <div className="Sudoku">
       <div className={isSolving ? 'container solving' : 'container'}>
       <header className="Sudoku-header">Sudoku</header>
-      <p>{timer}</p>
+      <div className="timerContainer">
+        <p className="timer">{formatTime(timer)}</p>
+        {gameState === 'running' ? <div className="pause" onClick={() => dispatch({ type: ACTIONS.PAUSE_GAME })} /> : <div className="resume" onClick={() => dispatch({ type: ACTIONS.RESUME_GAME })} />}
+      </div>
       {isSolved ? <div className="success" onClick={() => setIsSolved(false)}>Congratulations you solved the sudoku!</div> : null}
       {gameState === 'paused' ? 
         <div className="pausedBoard">
@@ -271,11 +274,10 @@ function Sudoku() {
         </div>
         }
         <div className="menu">
-        <button onClick={() => dispatch({ type: ACTIONS.LOAD_RANDOM })}>Random</button>
-        <button onClick={() => dispatch({ type: ACTIONS.LOAD_RANDOM, payload: { type: 'easy' } })} className={type === 'easy' ? 'active' : null}>Easy</button>
-        <button onClick={() => dispatch({ type: ACTIONS.LOAD_RANDOM, payload: { type: 'medium' } })} className={type === 'medium' ? 'active' : null}>Medium</button>
-        <button onClick={() => dispatch({ type: ACTIONS.LOAD_RANDOM, payload: { type: 'hard' } })} className={type === 'hard' ? 'active' : null}>Hard</button>
-        {gameState === 'running' ? <button onClick={() => dispatch({ type: ACTIONS.PAUSE_GAME })}>Pause</button> : <button onClick={() => dispatch({ type: ACTIONS.RESUME_GAME })}>Resume</button>}
+          <button onClick={() => dispatch({ type: ACTIONS.LOAD_RANDOM })}>Random</button>
+          <button onClick={() => dispatch({ type: ACTIONS.LOAD_RANDOM, payload: { type: 'easy' } })} className={type === 'easy' ? 'active' : null}>Easy</button>
+          <button onClick={() => dispatch({ type: ACTIONS.LOAD_RANDOM, payload: { type: 'medium' } })} className={type === 'medium' ? 'active' : null}>Medium</button>
+          <button onClick={() => dispatch({ type: ACTIONS.LOAD_RANDOM, payload: { type: 'hard' } })} className={type === 'hard' ? 'active' : null}>Hard</button>
           <button onClick={startSolve}>Start Solving</button>
           <button onClick={() => dispatch({ type: ACTIONS.SOLVE_ONE })}>Solve One</button>
           <button onClick={() => dispatch({ type: ACTIONS.CLEAR })}>Clear</button>

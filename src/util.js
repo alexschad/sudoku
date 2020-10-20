@@ -123,3 +123,29 @@ const solveTCO = (arr, origArray, index = null) => {
 };
 
 export const solve = tco(solveTCO);
+
+export const formatTime = (duration) => {
+  const nonPaddedIntl = Intl.NumberFormat('en-us', { minimumIntegerDigits: 1 });
+  const paddedIntl = Intl.NumberFormat('en-us', { minimumIntegerDigits: 2 })
+
+  const [delimiter] = new Date().toLocaleTimeString('en-us').match(/\b[:.]\b/);
+  // const duration = 49_500; // input in seconds
+  const hours = Math.floor(duration / 3600);
+  const minutes = Math.floor(duration / 60) % 60;
+  const seconds = duration % 60;
+  const indexToPad = hours ? 0 : 1;
+  const timeFormat =
+    [hours, minutes, seconds]
+    .map((val, i) => {
+      return (val < 10 && i > indexToPad) ? paddedIntl.format(val) : nonPaddedIntl.format(val);
+    })
+    .filter((val, i) => {
+      if (i === 0) {
+          return !(val === '00' || val === '0');
+      }
+
+      return true;
+    })
+    .join(delimiter); // 4:32
+    return timeFormat;
+}

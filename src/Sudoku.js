@@ -102,7 +102,6 @@ const sudokuReducer = (state, action) => {
     case ACTIONS.RESUME_GAME:
       return {...state, gameState: 'running'};
     case ACTIONS.SET_TIMER:
-      console.log(action.payload.value);
       return {...state, timer: action.payload.timer};
     default:
       return state;

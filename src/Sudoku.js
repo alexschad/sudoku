@@ -7,6 +7,17 @@ import easy from './easy';
 import medium from './medium';
 import hard from './hard';
 import { solve, checkValid, formatTime } from './util';
+import NewGameDialog from './NewGameDialog';
+
+import { styled } from "@material-ui/core/styles";
+import { spacing } from "@material-ui/system";
+import MuiButton from "@material-ui/core/Button";
+
+/**
+ * Applies the spacing system to the material UI Button
+ */
+const Button = styled(MuiButton)(spacing);
+
 
 export const ACTIONS = {
   LOAD_RANDOM: 'load_random',
@@ -34,10 +45,14 @@ const sudokuReducer = (state, action) => {
       let newType;
       let newIndex;
       let newFields;
-      if (action.payload === undefined) {
+      if (action.payload.type === 'random') {
         newType = ['easy', 'medium', 'hard'][Math.floor(Math.random() * 3)];
         newIndex = Math.floor(Math.random() * SUDOKUS[newType].length);
         newFields = SUDOKUS[newType][newIndex];
+      } else if (action.payload.type === 'custom') {
+        newType = 'custom';
+        newIndex = null;
+        newFields = Array(81).fill(0);
       } else {
         newType = action.payload.type;
         newIndex = Math.floor(Math.random() * SUDOKUS[newType].length);
@@ -49,10 +64,13 @@ const sudokuReducer = (state, action) => {
       return {...state, fields: SUDOKUS[type][action.payload.sudokuIndex], sudokuIndex: action.payload.sudokuIndex, timer: 0};
     // clears all user selected fields. resets to the current sudoku
     case ACTIONS.RESET:
+      if (!type || type === 'custom') {
+        return {...state, type: 'custom', fields: Array(81).fill(0), sudokuIndex: null, timer: 0};
+      }
       return {...state, fields: SUDOKUS[type][sudokuIndex], sudokuIndex: sudokuIndex, timer: 0};
     // clears all fields
     case ACTIONS.CLEAR:
-      return {...state, type: null, fields: Array(81).fill(0), sudokuIndex: null, timer: 0};
+      return {...state, fields: Array(81).fill(0), sudokuIndex: null, timer: 0};
     // solve the sudoku
     case ACTIONS.SOLVE:
       const solved = solve(fields, fields);
@@ -139,6 +157,7 @@ function Sudoku() {
   const [isSolving, setIsSolving] = useState(false);
   const [isSolved, setIsSolved] = useState(false);
   const [showHints, setShowHints] = useState(false);
+  const [open, setOpen] = React.useState(type === null);
 
   const isFirstRenderRef = useRef(true);
 
@@ -149,6 +168,9 @@ function Sudoku() {
     window.localStorage.setItem('gameState', JSON.stringify(gameState));
   }, [gameState]);
   useEffect(() => {
+    if (timer === 0) {
+      clearTimeout(timeOutRef.current);
+    }
     if (gameState === 'running') {
       timeOutRef.current = setTimeout(
         () => {
@@ -207,6 +229,7 @@ function Sudoku() {
     setOver(null);
   };
 
+
   // sets a number in a field called by the number selector
   const selectNumber = (clicked, value) => {
     dispatch({ type: ACTIONS.SET_FIELD, payload: { clicked, value }});
@@ -232,23 +255,30 @@ function Sudoku() {
   //   </div>);
   // }
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (value) => {
+    dispatch({ type: ACTIONS.LOAD_RANDOM, payload: { type: value } })
+    setOpen(false);
+  };
+
   return (
     <div className="Sudoku">
       <div className={isSolving ? 'container solving' : 'container'}>
-      <header className="Sudoku-header">Sudoku</header>
-      <div className="timerContainer">
-        <p className="timer">{formatTime(timer)}</p>
-        {gameState === 'running' ? <div className="pause" onClick={() => dispatch({ type: ACTIONS.PAUSE_GAME })} /> : <div className="resume" onClick={() => dispatch({ type: ACTIONS.RESUME_GAME })} />}
-      </div>
+      <header className="Sudoku-header">Sudoku {type ? `(${type})` : null}</header>
       {isSolved ? <div className="success" onClick={() => setIsSolved(false)}>Congratulations you solved the sudoku!</div> : null}
       {gameState === 'paused' ? 
-        <div className="pausedBoard">
+        <div className="pausedBoard" onClick={() => dispatch({ type: ACTIONS.RESUME_GAME })}>
           {Array(81).fill(0).map((f,i) => 
             <Field
               key={i}
               index={i}
               fields={Array(81).fill(0)}
               sudoku={null}
+              showSelector={() => {}}
+              showHints={false}
               mouseEnter={() => {}}
               mouseLeave={() => {}}
             />)}
@@ -272,16 +302,18 @@ function Sudoku() {
           )}
         </div>
         }
+        <NewGameDialog  open={open} onClose={handleClose} />
+        <div className="timerContainer">
+            <p className="timer">{formatTime(timer)}</p>
+            {gameState === 'running' ? <div className="pause" onClick={() => dispatch({ type: ACTIONS.PAUSE_GAME })} /> : <div className="resume" onClick={() => dispatch({ type: ACTIONS.RESUME_GAME })} />}
+          </div>
         <div className="menu">
-          <button onClick={() => dispatch({ type: ACTIONS.LOAD_RANDOM })}>Random</button>
-          <button onClick={() => dispatch({ type: ACTIONS.LOAD_RANDOM, payload: { type: 'easy' } })} className={type === 'easy' ? 'active' : null}>Easy</button>
-          <button onClick={() => dispatch({ type: ACTIONS.LOAD_RANDOM, payload: { type: 'medium' } })} className={type === 'medium' ? 'active' : null}>Medium</button>
-          <button onClick={() => dispatch({ type: ACTIONS.LOAD_RANDOM, payload: { type: 'hard' } })} className={type === 'hard' ? 'active' : null}>Hard</button>
-          <button onClick={startSolve}>Start Solving</button>
-          <button onClick={() => dispatch({ type: ACTIONS.SOLVE_ONE })}>Solve One</button>
-          <button onClick={() => dispatch({ type: ACTIONS.CLEAR })}>Clear</button>
-          <button onClick={() => dispatch({ type: ACTIONS.RESET })}>Reset</button>
-          <button onClick={(e) => setShowHints(!showHints)}>{showHints ? 'Hide' : 'Show'} Hints</button>
+
+          <Button mx={1} onClick={handleClickOpen}>New Game</Button>
+          <Button mx={1} onClick={startSolve}>Solve Sudoku</Button>
+          <Button mx={1} onClick={() => dispatch({ type: ACTIONS.SOLVE_ONE })}>Solve One</Button>
+          <Button mx={1} onClick={() => dispatch({ type: ACTIONS.RESET })}>Reset</Button>
+          <Button mx={1} onClick={(e) => setShowHints(!showHints)}>{showHints ? 'Hide' : 'Show'} Hints</Button>
         </div>
         <NumberSelector
           selectNumber={selectNumber}

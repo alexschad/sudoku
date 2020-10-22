@@ -7,7 +7,7 @@ export default function NumberSelector({clicked, setClicked, selectNumber, selPo
   const col = cols.find(c => c.includes(clicked));
   const square = squares.find(s => s.includes(clicked));
   const usedIndices = (row && col && square) ? row.concat(col).concat(square) : [];
-  const usedVals = usedIndices.map(ui => fields[ui]).filter(i => i !== null);
+  const usedVals = usedIndices.map(ui => fields[ui]).filter(i => i !== 0 && i !== fields[clicked]);
 
   const nCont = document.getElementById('numberSelectorContainer');
   const height = nCont ? Math.floor(nCont.offsetHeight / 2) : 0;
@@ -17,13 +17,13 @@ export default function NumberSelector({clicked, setClicked, selectNumber, selPo
     <div
       id="numberSelectorContainer"
       style={{
-        display: clicked!== null ? 'block' : 'none',
+        display: clicked !== null ? 'block' : 'none',
         top: selPos[1] - height + 'px',
         left: selPos[0] - width + 'px',
       }}
     >
       <div className="numberSelector" onMouseLeave={() => setClicked(null)}>
-        <div className="selectorClose" onClick={() => selectNumber(clicked, null)}>X</div>
+        <div className="selectorClose" onClick={() => selectNumber(clicked, 0)}>X</div>
         {
           [1,2,3,4,5,6,7,8,9].map( n => {
             if (usedVals.includes(n)) {

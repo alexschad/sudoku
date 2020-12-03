@@ -86,14 +86,14 @@
   border-radius: 50%;
   z-index: 1;
   left: calc(50% - 6em);
-  top: calc(50% - 8em);
+  top: calc(50% - 9.5em);
   border: 4px solid black;
 }
 
 .pausedBoard::after {
   content: '';
   position: absolute;
-  top: calc(50% - 6em);
+  top: calc(50% - 7.5em);
   left: calc(50% - 2em);
   width: 0;
   height: 0;

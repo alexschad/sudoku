@@ -14,7 +14,7 @@ const NewGameDialog = ({ onClose, open }) => {
   };
 
   return (
-    <Dialog fullscreen onClose={handleClose} aria-labelledby="simple-dialog-title" open={open}>
+    <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" open={open}>
       <DialogTitle id="simple-dialog-title">Set backup account</DialogTitle>
       <DialogActions>
       <Button onClick={() => selectGameClick( 'random' )}>Random</Button>

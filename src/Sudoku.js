@@ -171,14 +171,14 @@ function Sudoku() {
     if (timer === 0) {
       clearTimeout(timeOutRef.current);
     }
-    if (gameState === 'running') {
+    if (gameState === 'running' && !isSolved) {
       timeOutRef.current = setTimeout(
         () => {
           dispatch({ type: ACTIONS.SET_TIMER, payload: { timer: timer + 1 }});
           window.localStorage.setItem('timer', JSON.stringify(timer))
         }, 1000);
     }
-  }, [timer, gameState]);
+  }, [timer, gameState, isSolved]);
 
 
 

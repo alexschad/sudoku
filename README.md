@@ -7,7 +7,7 @@ Completed games are always an example of a Latin square, including an additional
 This tool comes with a set of sodukos. This list is easily extendable in the data.js file. You can just solve the provided sudokus or put in a sudoku
 you are struggling with and solve it with one click or just get the next correct number. If you just want a little help you can enable hints to easily find the easiest way to go forward.
 
-## get started
+## Get started
 
 1. Clone Repository
 
@@ -15,13 +15,13 @@ you are struggling with and solve it with one click or just get the next correct
 git clone https://github.com/alexschad/sudoku.git
 ```
 
-2. goto the sudoku directory
+2. Goto the sudoku directory
 
 ```
 cd sudoku
 ```
 
-3. install node modules
+3. Install node modules
 
 ```
 npm install
@@ -33,6 +33,6 @@ npm install
 npm run start
 ```
 
-5. open Browser and goto
+5. Running
 
-http://localhost:3000/
+open `http://localhost:8080` in your web browser.

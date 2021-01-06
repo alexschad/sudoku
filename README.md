@@ -15,12 +15,24 @@ you are struggling with and solve it with one click or just get the next correct
 git clone https://github.com/alexschad/sudoku.git
 ```
 
-2. Start the server
+2. goto the sudoku directory
+
+```
+cd sudoku
+```
+
+3. install node modules
+
+```
+npm install
+```
+
+4. Start the server
 
 ```
 npm run start
 ```
 
-3. open Browser and goto
+5. open Browser and goto
 
 http://localhost:3000/

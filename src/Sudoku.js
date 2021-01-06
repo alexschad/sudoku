@@ -6,7 +6,8 @@ import { rows, cols, squares } from './data';
 import easy from './easy';
 import medium from './medium';
 import hard from './hard';
-import { solve, checkValid, formatTime } from './util';
+import { checkValid, formatTime } from './util';
+import {solve } from './solve';
 import NewGameDialog from './NewGameDialog';
 
 import { styled } from "@material-ui/core/styles";
@@ -73,7 +74,7 @@ const sudokuReducer = (state, action) => {
       return {...state, fields: Array(81).fill(0), sudokuIndex: null, timer: 0};
     // solve the sudoku
     case ACTIONS.SOLVE:
-      const solved = solve(fields, fields);
+      const solved = solve(fields);
       return {...state, fields: solved};
     // solve one field of the sudoku
     case ACTIONS.SOLVE_ONE:
@@ -99,8 +100,7 @@ const sudokuReducer = (state, action) => {
         newFields[sol[0]] = sol[1];
         return {...state, fields: newFields};
       } else {
-        // no smart solution so we use brute force
-        const solved = solve(fields, fields);
+        const solved = solve(fields);
         const nullIndices = fields.map((f,i) => i).filter(i => fields[i] === 0);
         const solIndex = nullIndices[Math.floor(Math.random() * nullIndices.length)];
         const sol = [solIndex, solved[solIndex]];
@@ -171,14 +171,14 @@ function Sudoku() {
     if (timer === 0) {
       clearTimeout(timeOutRef.current);
     }
-    if (gameState === 'running') {
+    if (gameState === 'running' && !isSolved) {
       timeOutRef.current = setTimeout(
         () => {
           dispatch({ type: ACTIONS.SET_TIMER, payload: { timer: timer + 1 }});
           window.localStorage.setItem('timer', JSON.stringify(timer))
         }, 1000);
     }
-  }, [timer, gameState]);
+  }, [timer, gameState, isSolved]);
 
 
 

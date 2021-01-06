@@ -74,7 +74,7 @@ const sudokuReducer = (state, action) => {
       return {...state, fields: Array(81).fill(0), sudokuIndex: null, timer: 0};
     // solve the sudoku
     case ACTIONS.SOLVE:
-      const solved = solve(fields.join());
+      const solved = solve(fields);
       return {...state, fields: solved};
     // solve one field of the sudoku
     case ACTIONS.SOLVE_ONE:
@@ -100,7 +100,7 @@ const sudokuReducer = (state, action) => {
         newFields[sol[0]] = sol[1];
         return {...state, fields: newFields};
       } else {
-        const solved = solve(fields.join());
+        const solved = solve(fields);
         const nullIndices = fields.map((f,i) => i).filter(i => fields[i] === 0);
         const solIndex = nullIndices[Math.floor(Math.random() * nullIndices.length)];
         const sol = [solIndex, solved[solIndex]];

@@ -168,7 +168,7 @@ const format = grid => {
   // console.log(squares.map(s => parseInt(grid[s], 10)));
   return squares.map(s => parseInt(grid[s], 10));
 }
-export const solve = grid => format(search(parse_grid(grid)));
+export const solve = grid => format(search(parse_grid(grid.join())));
 
 // const center = (txt, lgt, chr=' ') => {
 //   let txtcopy = txt;

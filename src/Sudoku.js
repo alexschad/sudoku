@@ -30,6 +30,7 @@ export const ACTIONS = {
   SET_FIELD: 'set_field',
   PAUSE_GAME: 'pause_game',
   SET_TIMER: 'set_timer',
+  HISTORY_BACK: 'history_back',
 };
 
 const SUDOKUS = {
@@ -59,25 +60,26 @@ const sudokuReducer = (state, action) => {
         newIndex = Math.floor(Math.random() * SUDOKUS[newType].length);
         newFields = SUDOKUS[newType][newIndex];
       }
-      return {...state, type: newType, fields: newFields, sudokuIndex: newIndex, timer: 0, gameState: 'running'};
+      return {...state, type: newType, fields: newFields, sudokuIndex: newIndex, timer: 0, gameState: 'running', history: []};
     // loads one of the stored sudokus
     case ACTIONS.LOAD:
-      return {...state, fields: SUDOKUS[type][action.payload.sudokuIndex], sudokuIndex: action.payload.sudokuIndex, timer: 0};
+      return {...state, fields: SUDOKUS[type][action.payload.sudokuIndex], sudokuIndex: action.payload.sudokuIndex, timer: 0, history: []};
     // clears all user selected fields. resets to the current sudoku
     case ACTIONS.RESET:
       if (!type || type === 'custom') {
-        return {...state, type: 'custom', fields: Array(81).fill(0), sudokuIndex: null, timer: 0};
+        return {...state, type: 'custom', fields: Array(81).fill(0), sudokuIndex: null, timer: 0, history: []};
       }
-      return {...state, fields: SUDOKUS[type][sudokuIndex], sudokuIndex: sudokuIndex, timer: 0};
+      return {...state, fields: SUDOKUS[type][sudokuIndex], sudokuIndex: sudokuIndex, timer: 0, history: []};
     // clears all fields
     case ACTIONS.CLEAR:
-      return {...state, fields: Array(81).fill(0), sudokuIndex: null, timer: 0};
+      return {...state, fields: Array(81).fill(0), sudokuIndex: null, timer: 0, history: []};
     // solve the sudoku
     case ACTIONS.SOLVE:
       const solved = solve(fields);
       return {...state, fields: solved};
     // solve one field of the sudoku
-    case ACTIONS.SOLVE_ONE:
+    case ACTIONS.SOLVE_ONE: {
+      const history = [...state.history, fields]
       const ones = fields.map((field,index) => {
         const row = rows.find(r => r.includes(index));
         const col = cols.find(c => c.includes(index));
@@ -98,7 +100,7 @@ const sudokuReducer = (state, action) => {
         sol[1] = [1,2,3,4,5,6,7,8,9].filter(x => !sol[1].includes(x))[0];
         const newFields = [...fields];
         newFields[sol[0]] = sol[1];
-        return {...state, fields: newFields};
+        return {...state, fields: newFields, history};
       } else {
         const solved = solve(fields);
         const nullIndices = fields.map((f,i) => i).filter(i => fields[i] === 0);
@@ -106,13 +108,16 @@ const sudokuReducer = (state, action) => {
         const sol = [solIndex, solved[solIndex]];
         const newFields = [...fields];
         newFields[sol[0]] = sol[1];
-        return {...state, fields: newFields};
+        return {...state, fields: newFields, history};
       }
+    }
     // set one field with a number
-    case ACTIONS.SET_FIELD:
+    case ACTIONS.SET_FIELD: {
+      const history = [...state.history, fields]
       const currentFields = [...fields];
       currentFields[action.payload.clicked] = action.payload.value;
-      return {...state, fields: currentFields};
+      return {...state, fields: currentFields, history};
+    }
     // pause game
     case ACTIONS.PAUSE_GAME:
       return {...state, gameState: 'paused'};
@@ -121,6 +126,15 @@ const sudokuReducer = (state, action) => {
       return {...state, gameState: 'running'};
     case ACTIONS.SET_TIMER:
       return {...state, timer: action.payload.timer};
+    // undo last action
+    case ACTIONS.HISTORY_BACK: {
+      if (state.history.length === 0) {
+        return {...state}
+      }
+      const fields = state.history[state.history.length-1]
+      const history = state.history.slice(0, state.history.length-1)
+      return {...state, fields, history};
+    }
     default:
       return state;
   }
@@ -140,10 +154,12 @@ function Sudoku() {
     const gameState = sudokuStateJSON ? JSON.parse(sudokuStateJSON) : 'paused';
     const sudokuTimerJSON = window.localStorage.getItem("timer");
     const timer = sudokuTimerJSON ? JSON.parse(sudokuTimerJSON) : 0;
-    return {type, fields, sudokuIndex, gameState, timer};
+    const sudokuHistoryJSON = window.localStorage.getItem("history");
+    const history = sudokuHistoryJSON ? JSON.parse(sudokuHistoryJSON) : [];
+    return {type, fields, sudokuIndex, gameState, timer, history};
   };
 
-  const [{type, fields, sudokuIndex, gameState, timer}, dispatch] = React.useReducer(
+  const [{type, fields, sudokuIndex, gameState, timer, history}, dispatch] = React.useReducer(
     sudokuReducer,
     undefined,
     initialSudoku
@@ -162,6 +178,7 @@ function Sudoku() {
   const isFirstRenderRef = useRef(true);
 
   useEffect(() => window.localStorage.setItem('type', JSON.stringify(type)), [type]);
+  useEffect(() => window.localStorage.setItem('history', JSON.stringify(history)), [history]);
   useEffect(() => window.localStorage.setItem('fields', JSON.stringify(fields)), [fields]);
   useEffect(() => {
     clearTimeout(timeOutRef.current);
@@ -267,8 +284,16 @@ function Sudoku() {
   return (
     <div className="Sudoku">
       <div className={isSolving ? 'container solving' : 'container'}>
-      <header className="Sudoku-header">Sudoku {type ? `(${type})` : null}</header>
+      <header className="Sudoku-header">Sudoku</header>
       {isSolved ? <div className="success" onClick={() => setIsSolved(false)}>Congratulations you solved the sudoku!</div> : null}
+      <div className="info">
+      <div className="infoType">{type}</div>
+        <div className="timerContainer">
+          <p className="timer">{formatTime(timer)}</p>
+          {gameState === 'running' ? <div className="pause" onClick={() => dispatch({ type: ACTIONS.PAUSE_GAME })} /> : <div className="resume" onClick={() => dispatch({ type: ACTIONS.RESUME_GAME })} />}
+        </div>
+      </div>
+
       {gameState === 'paused' ? 
         <div className="pausedBoard" onClick={() => dispatch({ type: ACTIONS.RESUME_GAME })}>
           {Array(81).fill(0).map((f,i) => 
@@ -303,16 +328,13 @@ function Sudoku() {
         </div>
         }
         <NewGameDialog  open={open} onClose={handleClose} />
-        <div className="timerContainer">
-            <p className="timer">{formatTime(timer)}</p>
-            {gameState === 'running' ? <div className="pause" onClick={() => dispatch({ type: ACTIONS.PAUSE_GAME })} /> : <div className="resume" onClick={() => dispatch({ type: ACTIONS.RESUME_GAME })} />}
-          </div>
         <div className="menu">
 
           <Button mx={1} onClick={handleClickOpen}>New Game</Button>
           <Button mx={1} onClick={startSolve}>Solve Sudoku</Button>
           <Button mx={1} onClick={() => dispatch({ type: ACTIONS.SOLVE_ONE })}>Solve One</Button>
           <Button mx={1} onClick={() => dispatch({ type: ACTIONS.RESET })}>Reset</Button>
+          <Button mx={1} onClick={() => dispatch({ type: ACTIONS.HISTORY_BACK })}>Undo</Button>
           <Button mx={1} onClick={(e) => setShowHints(!showHints)}>{showHints ? 'Hide' : 'Show'} Hints</Button>
         </div>
         <NumberSelector

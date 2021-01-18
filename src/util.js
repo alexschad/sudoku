@@ -13,26 +13,26 @@ const dupes = (arr) => {
   return duplicates(count(arr));
 }
 
-export const checkValid = boardsState => {
+export const checkValid = (boardsState, solution) => {
   const filledRows = rows.map(r => r.map(ri => boardsState[ri]));
   const filledCols = cols.map(c => c.map(ci => boardsState[ci]));
   const filledSquares = squares.map(s => s.map(si => boardsState[si]));
 
   const errRows = filledRows.map((fr, i) => {
     const duplicates = dupes(fr.filter(it => it !== 0));
-    const duplicateIndices = fr.map((a,i2) => duplicates.includes(a.toString()) ? rows[i][i2] : 0).filter(j => j !== 0);
+    const duplicateIndices = fr.map((a,i2) => duplicates.includes(a?.toString()) ? rows[i][i2] : 0).filter(j => j !== 0);
     return [duplicateIndices, i];
   }).filter(fr => fr[0].length > 0);
 
   const errCols = filledCols.map((fr, i) => {
     const duplicates = dupes(fr.filter(it => it !== 0));
-    const duplicateIndices = fr.map((a,i2) => duplicates.includes(a.toString()) ? cols[i][i2] : 0).filter(j => j !== 0);
+    const duplicateIndices = fr.map((a,i2) => duplicates.includes(a?.toString()) ? cols[i][i2] : 0).filter(j => j !== 0);
     return [duplicateIndices, i];
   }).filter(fr => fr[0].length > 0);
 
   const errSquares = filledSquares.map((fr, i) => {
     const duplicates = dupes(fr.filter(it => it !== 0));
-    const duplicateIndices = fr.map((a,i2) => duplicates.includes(a.toString()) ? squares[i][i2] : 0).filter(j => j !== 0);
+    const duplicateIndices = fr.map((a,i2) => duplicates.includes(a?.toString()) ? squares[i][i2] : 0).filter(j => j !== 0);
     return [duplicateIndices, i];
   }).filter(fr => fr[0].length > 0);
 
@@ -53,6 +53,12 @@ export const checkValid = boardsState => {
     errNumber = [...errNumber, ...e[0]];
     errHighlight = [...errHighlight, ...squares[e[1]]];
   });
+
+  boardsState.forEach((v, i) => {
+    if (solution.length === 81 && v !== 0 && v !== solution[i]) {
+      errNumber = [...errNumber, i]
+    }
+  })
 
   return [errNumber, errHighlight];
 };

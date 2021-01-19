@@ -14,17 +14,20 @@ const NewGameDialog = ({ onClose, open }) => {
   };
 
   return (
-    <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" open={open}>
+    <Dialog
+      onClose={handleClose}
+      aria-labelledby="simple-dialog-title"
+      open={open}>
       <DialogTitle id="simple-dialog-title">Select difficulty</DialogTitle>
       <DialogActions>
-      <Button onClick={() => selectGameClick( 'random' )}>Random</Button>
-      <Button onClick={() => selectGameClick( 'easy' )}>Easy</Button>
-      <Button onClick={() => selectGameClick( 'medium' )}>Medium</Button>
-      <Button onClick={() => selectGameClick( 'hard' )}>Hard</Button>
-      <Button onClick={() => selectGameClick( 'custom' )}>Custom Game</Button>
+        <Button onClick={() => selectGameClick('random')}>Random</Button>
+        <Button onClick={() => selectGameClick('easy')}>Easy</Button>
+        <Button onClick={() => selectGameClick('medium')}>Medium</Button>
+        <Button onClick={() => selectGameClick('hard')}>Hard</Button>
+        <Button onClick={() => selectGameClick('custom')}>Custom Game</Button>
       </DialogActions>
     </Dialog>
   );
-}
+};
 
 export default NewGameDialog;

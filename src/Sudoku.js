@@ -30,7 +30,6 @@ function Sudoku() {
     let solution;
     if (sudokuFieldsJSON) {
       fields = JSON.parse(sudokuFieldsJSON);
-      console.log(fields);
       solution = solve(fields);
     } else {
       fields = Array(81).fill(0);
@@ -44,6 +43,8 @@ function Sudoku() {
     const history = sudokuHistoryJSON ? JSON.parse(sudokuHistoryJSON) : [];
     const sudokuMistakesJSON = window.localStorage.getItem('mistakes');
     const mistakes = sudokuTimerJSON ? JSON.parse(sudokuMistakesJSON) : 0;
+    const sudokuHintsJSON = window.localStorage.getItem('hints');
+    const hints = sudokuTimerJSON ? JSON.parse(sudokuHintsJSON) : 0;
     return {
       type,
       fields,
@@ -53,6 +54,7 @@ function Sudoku() {
       history,
       mistakes,
       solution,
+      hints,
     };
   };
 
@@ -66,6 +68,7 @@ function Sudoku() {
       history,
       mistakes,
       solution,
+      hints,
     },
     dispatch,
   ] = React.useReducer(reducer, undefined, initialSudoku);
@@ -204,8 +207,11 @@ function Sudoku() {
           </div>
         ) : null}
         <div className="info">
+          <div className="infoScore">
+            <p>Mistakes: {mistakes}</p>
+            <p>Hints: {hints}</p>
+          </div>
           <div className="infoType">{type}</div>
-          <div className="infoMistakes">Mistakes: {mistakes}</div>
           <div className="timerContainer">
             <p className="timer">{formatTime(timer)}</p>
             {gameState === 'running' ? (
@@ -270,22 +276,22 @@ function Sudoku() {
           <Button mx={1} onClick={handleClickOpen}>
             New Game
           </Button>
-          <Button mx={1} onClick={startSolve}>
-            Solve Sudoku
-          </Button>
           <Button mx={1} onClick={() => dispatch({ type: ACTIONS.SOLVE_ONE })}>
-            Solve One
-          </Button>
-          <Button mx={1} onClick={() => dispatch({ type: ACTIONS.RESET })}>
-            Reset
+            Hint
           </Button>
           <Button
             mx={1}
             onClick={() => dispatch({ type: ACTIONS.HISTORY_BACK })}>
             Undo
           </Button>
+          <Button mx={1} onClick={() => dispatch({ type: ACTIONS.RESET })}>
+            Reset
+          </Button>
+          <Button mx={1} onClick={startSolve}>
+            Solve Sudoku
+          </Button>
           <Button mx={1} onClick={(e) => setShowHints(!showHints)}>
-            {showHints ? 'Hide' : 'Show'} Hints
+            {showHints ? 'Hide' : 'Show'} Help
           </Button>
         </div>
         <NumberSelector

@@ -30,20 +30,23 @@ const reducer = (state, action) => {
       let newType;
       let newIndex;
       let newFields;
+      let solution;
       if (action.payload.type === 'random') {
         newType = ['easy', 'medium', 'hard'][Math.floor(Math.random() * 3)];
         newIndex = Math.floor(Math.random() * SUDOKUS[newType].length);
         newFields = SUDOKUS[newType][newIndex];
+        solution = solve(newFields);
       } else if (action.payload.type === 'custom') {
         newType = 'custom';
         newIndex = null;
         newFields = Array(81).fill(0);
+        solution = Array(81).fill(0);
       } else {
         newType = action.payload.type;
         newIndex = Math.floor(Math.random() * SUDOKUS[newType].length);
         newFields = SUDOKUS[newType][newIndex];
+        solution = solve(newFields);
       }
-      const solution = solve(newFields);
       return {
         ...state,
         type: newType,
@@ -54,6 +57,7 @@ const reducer = (state, action) => {
         gameState: 'running',
         history: [],
         mistakes: 0,
+        hints: 0,
       };
     // loads one of the stored sudokus
     case ACTIONS.LOAD: {
@@ -67,6 +71,7 @@ const reducer = (state, action) => {
         timer: 0,
         history: [],
         mistakes: 0,
+        hints: 0,
       };
     }
     // clears all user selected fields. resets to the current sudoku
@@ -80,6 +85,7 @@ const reducer = (state, action) => {
           timer: 0,
           history: [],
           mistakes: 0,
+          hints: 0,
         };
       }
       return {
@@ -89,6 +95,7 @@ const reducer = (state, action) => {
         timer: 0,
         history: [],
         mistakes: 0,
+        hints: 0,
       };
     // clears all fields
     case ACTIONS.CLEAR:
@@ -100,6 +107,7 @@ const reducer = (state, action) => {
         timer: 0,
         history: [],
         mistakes: 0,
+        hints: 0,
       };
     // solve the sudoku
     case ACTIONS.SOLVE:
@@ -115,7 +123,8 @@ const reducer = (state, action) => {
       const sol = [solIndex, state.solution[solIndex]];
       const newFields = [...fields];
       newFields[sol[0]] = sol[1];
-      return { ...state, fields: newFields, history };
+      const hints = state.hints + 1;
+      return { ...state, fields: newFields, history, hints };
     }
     // set one field with a number
     case ACTIONS.SET_FIELD: {

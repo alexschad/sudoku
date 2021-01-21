@@ -22,6 +22,44 @@ export const SUDOKUS = {
   hard,
 };
 
+export const initializeSudoku = () => {
+  const sudokuTypeJSON = window.localStorage.getItem('type');
+  const type = sudokuTypeJSON ? JSON.parse(sudokuTypeJSON) : null;
+  const sudokuIndexJSON = window.localStorage.getItem('index');
+  const sudokuIndex = sudokuIndexJSON ? JSON.parse(sudokuIndexJSON) : null;
+  const sudokuFieldsJSON = window.localStorage.getItem('fields');
+  let fields;
+  let solution;
+  if (sudokuFieldsJSON) {
+    fields = JSON.parse(sudokuFieldsJSON);
+    solution = solve(fields);
+  } else {
+    fields = Array(81).fill(0);
+    solution = [];
+  }
+  const sudokuStateJSON = window.localStorage.getItem('gameState');
+  const gameState = sudokuStateJSON ? JSON.parse(sudokuStateJSON) : 'paused';
+  const sudokuTimerJSON = window.localStorage.getItem('timer');
+  const timer = sudokuTimerJSON ? JSON.parse(sudokuTimerJSON) : 0;
+  const sudokuHistoryJSON = window.localStorage.getItem('history');
+  const history = sudokuHistoryJSON ? JSON.parse(sudokuHistoryJSON) : [];
+  const sudokuMistakesJSON = window.localStorage.getItem('mistakes');
+  const mistakes = sudokuTimerJSON ? JSON.parse(sudokuMistakesJSON) : 0;
+  const sudokuHintsJSON = window.localStorage.getItem('hints');
+  const hints = sudokuTimerJSON ? JSON.parse(sudokuHintsJSON) : 0;
+  return {
+    type,
+    fields,
+    sudokuIndex,
+    gameState,
+    timer,
+    history,
+    mistakes,
+    solution,
+    hints,
+  };
+};
+
 const reducer = (state, action) => {
   const { type, fields, sudokuIndex } = state;
   switch (action.type) {

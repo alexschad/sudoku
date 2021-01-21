@@ -4,7 +4,12 @@ import { spacing } from '@material-ui/system';
 import MuiButton from '@material-ui/core/Button';
 
 import './Sudoku.css';
-import reducer, { initializeSudoku, ACTIONS, SUDOKUS } from './Reducer';
+import reducer, {
+  withLocalStorageCache,
+  initializeSudoku,
+  ACTIONS,
+  SUDOKUS,
+} from './Reducer';
 import Field from './Field';
 import NumberSelector from './NumberSelector';
 import { rows, cols, squares } from './data';
@@ -21,19 +26,13 @@ function Sudoku() {
   const timeOutRef = useRef(null);
 
   const [
-    {
-      type,
-      fields,
-      sudokuIndex,
-      gameState,
-      timer,
-      history,
-      mistakes,
-      solution,
-      hints,
-    },
+    { type, fields, sudokuIndex, gameState, timer, mistakes, solution, hints },
     dispatch,
-  ] = React.useReducer(reducer, undefined, initializeSudoku);
+  ] = React.useReducer(
+    withLocalStorageCache(reducer),
+    undefined,
+    initializeSudoku,
+  );
   const [highlight, setHightlight] = useState([]);
   const [errHighlight, setErrHightlight] = useState([]);
   const [errNumber, setErrNumber] = useState([]);
@@ -47,24 +46,8 @@ function Sudoku() {
 
   const isFirstRenderRef = useRef(true);
 
-  useEffect(() => window.localStorage.setItem('type', JSON.stringify(type)), [
-    type,
-  ]);
-  useEffect(
-    () => window.localStorage.setItem('history', JSON.stringify(history)),
-    [history],
-  );
-  useEffect(
-    () => window.localStorage.setItem('mistakes', JSON.stringify(mistakes)),
-    [mistakes],
-  );
-  useEffect(
-    () => window.localStorage.setItem('fields', JSON.stringify(fields)),
-    [fields],
-  );
   useEffect(() => {
     clearTimeout(timeOutRef.current);
-    window.localStorage.setItem('gameState', JSON.stringify(gameState));
   }, [gameState]);
   useEffect(() => {
     if (timer === 0) {
@@ -73,7 +56,6 @@ function Sudoku() {
     if (gameState === 'running' && !isSolved) {
       timeOutRef.current = setTimeout(() => {
         dispatch({ type: ACTIONS.SET_TIMER, payload: { timer: timer + 1 } });
-        window.localStorage.setItem('timer', JSON.stringify(timer));
       }, 1000);
     }
   }, [timer, gameState, isSolved]);
@@ -85,7 +67,6 @@ function Sudoku() {
     } else {
       dispatch({ type: ACTIONS.CLEAR });
     }
-    window.localStorage.setItem('index', JSON.stringify(sudokuIndex));
   }, [sudokuIndex, isFirstRenderRef]);
 
   useEffect(() => {
@@ -142,13 +123,6 @@ function Sudoku() {
     setErrNumber(errn);
     setErrHightlight(errh);
   }, [fields, solution]);
-
-  // if (gameState === 'paused') {
-  //   return (<div className="Menu">
-  //     <h3>Game Paused</h3>
-  //     <button onClick={() => dispatch({ type: ACTIONS.LOAD_RANDOM })}>Random</button>
-  //   </div>);
-  // }
 
   const handleClickOpen = () => {
     setOpen(true);

@@ -4,12 +4,11 @@ import { spacing } from '@material-ui/system';
 import MuiButton from '@material-ui/core/Button';
 
 import './Sudoku.css';
-import reducer, { ACTIONS, SUDOKUS } from './Reducer';
+import reducer, { initializeSudoku, ACTIONS, SUDOKUS } from './Reducer';
 import Field from './Field';
 import NumberSelector from './NumberSelector';
 import { rows, cols, squares } from './data';
 import { checkValid, formatTime } from './util';
-import { solve } from './solve';
 import NewGameDialog from './NewGameDialog';
 
 /**
@@ -20,43 +19,6 @@ const Button = styled(MuiButton)(spacing);
 //main Module that shows the Fields, the Menu and the Number selector
 function Sudoku() {
   const timeOutRef = useRef(null);
-  const initialSudoku = () => {
-    const sudokuTypeJSON = window.localStorage.getItem('type');
-    const type = sudokuTypeJSON ? JSON.parse(sudokuTypeJSON) : null;
-    const sudokuIndexJSON = window.localStorage.getItem('index');
-    const sudokuIndex = sudokuIndexJSON ? JSON.parse(sudokuIndexJSON) : null;
-    const sudokuFieldsJSON = window.localStorage.getItem('fields');
-    let fields;
-    let solution;
-    if (sudokuFieldsJSON) {
-      fields = JSON.parse(sudokuFieldsJSON);
-      solution = solve(fields);
-    } else {
-      fields = Array(81).fill(0);
-      solution = [];
-    }
-    const sudokuStateJSON = window.localStorage.getItem('gameState');
-    const gameState = sudokuStateJSON ? JSON.parse(sudokuStateJSON) : 'paused';
-    const sudokuTimerJSON = window.localStorage.getItem('timer');
-    const timer = sudokuTimerJSON ? JSON.parse(sudokuTimerJSON) : 0;
-    const sudokuHistoryJSON = window.localStorage.getItem('history');
-    const history = sudokuHistoryJSON ? JSON.parse(sudokuHistoryJSON) : [];
-    const sudokuMistakesJSON = window.localStorage.getItem('mistakes');
-    const mistakes = sudokuTimerJSON ? JSON.parse(sudokuMistakesJSON) : 0;
-    const sudokuHintsJSON = window.localStorage.getItem('hints');
-    const hints = sudokuTimerJSON ? JSON.parse(sudokuHintsJSON) : 0;
-    return {
-      type,
-      fields,
-      sudokuIndex,
-      gameState,
-      timer,
-      history,
-      mistakes,
-      solution,
-      hints,
-    };
-  };
 
   const [
     {
@@ -71,7 +33,7 @@ function Sudoku() {
       hints,
     },
     dispatch,
-  ] = React.useReducer(reducer, undefined, initialSudoku);
+  ] = React.useReducer(reducer, undefined, initializeSudoku);
   const [highlight, setHightlight] = useState([]);
   const [errHighlight, setErrHightlight] = useState([]);
   const [errNumber, setErrNumber] = useState([]);

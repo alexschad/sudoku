@@ -51,9 +51,6 @@ const Board = ({
           index={i}
           fields={fields}
           sudoku={sudoku}
-          // type !== null && sudokuIndex !== null
-          //   ? SUDOKUS[type][sudokuIndex]
-          //   : null
           showSelector={showSelector}
           showHints={showHints}
           mouseEnter={mouseEnter}

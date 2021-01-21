@@ -15,6 +15,7 @@ import Field from './Field';
 import { checkValid, formatTime } from './util';
 import NewGameDialog from './NewGameDialog';
 
+import CustomSudoku from './CustomSudoku';
 /**
  * Applies the spacing system to the material UI Button
  */
@@ -190,6 +191,9 @@ function Sudoku() {
             {showHints ? 'Hide' : 'Show'} Help
           </Button>
         </div>
+      </div>
+      <div className="container">
+        <CustomSudoku />
       </div>
     </div>
   );

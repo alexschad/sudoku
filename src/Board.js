@@ -4,12 +4,12 @@ import NumberSelector from './NumberSelector';
 import { rows, cols, squares } from './data';
 
 const Board = ({
-  fields,
-  sudoku,
-  showHints,
-  selectNumber,
-  errHighlight,
-  errNumber,
+  fields = Array(81).fill(0),
+  sudoku = null,
+  showHints = false,
+  selectNumber = () => {},
+  errHighlight = [],
+  errNumber = [],
 }) => {
   const [selPos, setSelPos] = useState([0, 0]);
   const [highlight, setHightlight] = useState([]);

@@ -181,8 +181,8 @@
   background: rgb(248, 201, 72);
 }
 
-#numberSelectorContainer {
-  position: absolute;
+.numberSelectorContainer {
+  position: fixed;
 }
 
 .field > .hint {

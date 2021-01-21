@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 // Popup to select a number for a field.
 export default function NumberSelector({
@@ -7,13 +7,16 @@ export default function NumberSelector({
   selectNumber,
   selPos,
 }) {
-  const nCont = document.getElementById('numberSelectorContainer');
+  const containerRef = useRef(null);
+  // const nCont = document.getElementById('numberSelectorContainer');
+  const nCont = containerRef.current;
   const height = nCont ? Math.floor(nCont.offsetHeight / 2) : 0;
   const width = nCont ? Math.floor(nCont.offsetWidth / 2) : 0;
 
   return (
     <div
-      id="numberSelectorContainer"
+      ref={containerRef}
+      className="numberSelectorContainer"
       style={{
         display: clicked !== null ? 'block' : 'none',
         top: selPos[1] - height + 'px',

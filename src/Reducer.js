@@ -23,41 +23,24 @@ export const SUDOKUS = {
 };
 
 export const initializeSudoku = () => {
-  const sudokuTypeJSON = window.localStorage.getItem('type');
-  const type = sudokuTypeJSON ? JSON.parse(sudokuTypeJSON) : null;
-  const sudokuIndexJSON = window.localStorage.getItem('index');
-  const sudokuIndex = sudokuIndexJSON ? JSON.parse(sudokuIndexJSON) : null;
-  const sudokuFieldsJSON = window.localStorage.getItem('fields');
-  let fields;
-  let solution;
-  if (sudokuFieldsJSON) {
-    fields = JSON.parse(sudokuFieldsJSON);
-    solution = solve(fields);
+  let data;
+  const JSONData = localStorage.getItem('data');
+  if (JSONData) {
+    data = JSON.parse(JSONData);
   } else {
-    fields = Array(81).fill(0);
-    solution = [];
+    data = {
+      type: null,
+      fields: Array(81).fill(0),
+      solution: [],
+      sudokuIndex: null,
+      gameState: 'paused',
+      timer: 0,
+      history: [],
+      mistakes: 0,
+      hints: 0,
+    };
   }
-  const sudokuStateJSON = window.localStorage.getItem('gameState');
-  const gameState = sudokuStateJSON ? JSON.parse(sudokuStateJSON) : 'paused';
-  const sudokuTimerJSON = window.localStorage.getItem('timer');
-  const timer = sudokuTimerJSON ? JSON.parse(sudokuTimerJSON) : 0;
-  const sudokuHistoryJSON = window.localStorage.getItem('history');
-  const history = sudokuHistoryJSON ? JSON.parse(sudokuHistoryJSON) : [];
-  const sudokuMistakesJSON = window.localStorage.getItem('mistakes');
-  const mistakes = sudokuTimerJSON ? JSON.parse(sudokuMistakesJSON) : 0;
-  const sudokuHintsJSON = window.localStorage.getItem('hints');
-  const hints = sudokuTimerJSON ? JSON.parse(sudokuHintsJSON) : 0;
-  return {
-    type,
-    fields,
-    sudokuIndex,
-    gameState,
-    timer,
-    history,
-    mistakes,
-    solution,
-    hints,
-  };
+  return data;
 };
 
 const reducer = (state, action) => {
@@ -195,6 +178,14 @@ const reducer = (state, action) => {
     default:
       return state;
   }
+};
+
+export const withLocalStorageCache = (reducer) => {
+  return (state, action) => {
+    const newState = reducer(state, action);
+    localStorage.setItem('data', JSON.stringify(newState));
+    return newState;
+  };
 };
 
 export default reducer;

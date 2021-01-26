@@ -193,7 +193,7 @@ function Sudoku() {
         </div>
       </div>
       <div className="container">
-        <CustomSudoku />
+        <CustomSudoku dispatch={dispatch} />
       </div>
     </div>
   );

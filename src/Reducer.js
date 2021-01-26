@@ -5,6 +5,7 @@ import { solve } from './solve';
 
 export const ACTIONS = {
   LOAD_RANDOM: 'load_random',
+  LOAD_CUSTOM: 'load_custom',
   LOAD: 'load',
   CLEAR: 'clear',
   RESET: 'reset',
@@ -80,6 +81,20 @@ const reducer = (state, action) => {
         mistakes: 0,
         hints: 0,
       };
+    // loads one of the stored sudokus
+    case ACTIONS.LOAD_CUSTOM: {
+      return {
+        ...state,
+        type: 'custom',
+        fields: action.payload.fields,
+        solution: action.payload.solution,
+        sudokuIndex: null,
+        timer: 0,
+        history: [],
+        mistakes: 0,
+        hints: 0,
+      };
+    }
     // loads one of the stored sudokus
     case ACTIONS.LOAD: {
       const fields = SUDOKUS[type][action.payload.sudokuIndex];

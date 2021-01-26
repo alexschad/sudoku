@@ -8,7 +8,6 @@ import reducer, {
   withLocalStorageCache,
   initializeSudoku,
   ACTIONS,
-  SUDOKUS,
 } from './Reducer';
 import Board from './Board';
 import Field from './Field';
@@ -26,7 +25,17 @@ function Sudoku() {
   const timeOutRef = useRef(null);
 
   const [
-    { type, fields, sudokuIndex, gameState, timer, mistakes, solution, hints },
+    {
+      type,
+      fields,
+      sudoku,
+      gameState,
+      timer,
+      mistakes,
+      solution,
+      hints,
+      createCustomBoard,
+    },
     dispatch,
   ] = React.useReducer(
     withLocalStorageCache(reducer),
@@ -58,12 +67,12 @@ function Sudoku() {
 
   useEffect(() => {
     if (isFirstRenderRef.current) return;
-    if (sudokuIndex !== null) {
-      dispatch({ type: ACTIONS.LOAD, payload: { sudokuIndex } });
+    if (sudoku !== null) {
+      dispatch({ type: ACTIONS.LOAD, payload: { sudoku } });
     } else {
       dispatch({ type: ACTIONS.CLEAR });
     }
-  }, [sudokuIndex, isFirstRenderRef]);
+  }, [sudoku, isFirstRenderRef]);
 
   useEffect(() => {
     isFirstRenderRef.current = false;
@@ -107,7 +116,10 @@ function Sudoku() {
 
   return (
     <div className="Sudoku">
-      <div className={isSolving ? 'container solving' : 'container'}>
+      <div
+        className={`container${isSolving ? ' solving' : ''}${
+          createCustomBoard ? ' hide' : ''
+        }`}>
         <header className="Sudoku-header">Sudoku</header>
         {isSolved ? (
           <div className="success" onClick={() => setIsSolved(false)}>
@@ -158,11 +170,7 @@ function Sudoku() {
         ) : (
           <Board
             fields={fields}
-            sudoku={
-              type !== null && sudokuIndex !== null
-                ? SUDOKUS[type][sudokuIndex]
-                : null
-            }
+            sudoku={sudoku}
             showHints={showHints}
             errHighlight={errHighlight}
             errNumber={errNumber}
@@ -192,8 +200,8 @@ function Sudoku() {
           </Button>
         </div>
       </div>
-      <div className="container">
-        <CustomSudoku dispatch={dispatch} />
+      <div className={`container${!createCustomBoard ? ' hide' : ''}`}>
+        <CustomSudoku dispatch={dispatch} handleClickOpen={handleClickOpen} />
       </div>
     </div>
   );

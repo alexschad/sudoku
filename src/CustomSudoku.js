@@ -9,7 +9,7 @@ import Board from './Board';
 
 const Button = styled(MuiButton)(spacing);
 
-const CustomSudoku = ({ dispatch }) => {
+const CustomSudoku = ({ dispatch, handleClickOpen }) => {
   const [fields, setFields] = useState(Array(81).fill(0));
 
   // sets a number in a field called by the number selector
@@ -26,17 +26,25 @@ const CustomSudoku = ({ dispatch }) => {
       return;
     }
     dispatch({ type: ACTIONS.LOAD_CUSTOM, payload: { fields, solution } });
-    setFields(solution);
+    setFields(Array(81).fill(0));
   };
 
   const clear = () => {
     setFields(Array(81).fill(0));
   };
+  const newGame = () => {
+    setFields(Array(81).fill(0));
+    handleClickOpen();
+  };
 
   return (
-    <div>
+    <>
+      <header className="Sudoku-header">Create your own Sudoku</header>
       <Board fields={fields} selectNumber={selectNumber} />
       <div className="menu">
+        <Button mx={1} onClick={newGame}>
+          New Game
+        </Button>
         <Button mx={1} onClick={clear}>
           Clear
         </Button>
@@ -44,7 +52,7 @@ const CustomSudoku = ({ dispatch }) => {
           Play the Sudoku
         </Button>
       </div>
-    </div>
+    </>
   );
 };
 export default CustomSudoku;

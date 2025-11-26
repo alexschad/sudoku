@@ -181,8 +181,9 @@
   background: rgb(248, 201, 72);
 }
 
-#numberSelectorContainer {
-  position: absolute;
+.numberSelectorContainer {
+  position: fixed;
+  z-index: 10;
 }
 
 .field > .hint {
@@ -319,4 +320,8 @@ button.active {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+}
+
+.hide {
+  display: none;
 }

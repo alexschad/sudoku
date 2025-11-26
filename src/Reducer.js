@@ -5,6 +5,7 @@ import { solve } from './solve';
 
 export const ACTIONS = {
   LOAD_RANDOM: 'load_random',
+  LOAD_CUSTOM: 'load_custom',
   LOAD: 'load',
   CLEAR: 'clear',
   RESET: 'reset',
@@ -32,19 +33,20 @@ export const initializeSudoku = () => {
       type: null,
       fields: Array(81).fill(0),
       solution: [],
-      sudokuIndex: null,
+      sudoku: null,
       gameState: 'paused',
       timer: 0,
       history: [],
       mistakes: 0,
       hints: 0,
+      createCustomBoard: false,
     };
   }
   return data;
 };
 
 const reducer = (state, action) => {
-  const { type, fields, sudokuIndex } = state;
+  const { type, fields, sudoku } = state;
   switch (action.type) {
     // randomly loads one of the stored sudokus
     case ACTIONS.LOAD_RANDOM:
@@ -52,6 +54,7 @@ const reducer = (state, action) => {
       let newIndex;
       let newFields;
       let solution;
+      let createCustomBoard = false;
       if (action.payload.type === 'random') {
         newType = ['easy', 'medium', 'hard'][Math.floor(Math.random() * 3)];
         newIndex = Math.floor(Math.random() * SUDOKUS[newType].length);
@@ -62,6 +65,7 @@ const reducer = (state, action) => {
         newIndex = null;
         newFields = Array(81).fill(0);
         solution = Array(81).fill(0);
+        createCustomBoard = true;
       } else {
         newType = action.payload.type;
         newIndex = Math.floor(Math.random() * SUDOKUS[newType].length);
@@ -73,22 +77,38 @@ const reducer = (state, action) => {
         type: newType,
         fields: newFields,
         solution,
-        sudokuIndex: newIndex,
+        sudoku: newFields,
         timer: 0,
         gameState: 'running',
         history: [],
         mistakes: 0,
         hints: 0,
+        createCustomBoard,
       };
     // loads one of the stored sudokus
+    case ACTIONS.LOAD_CUSTOM: {
+      return {
+        ...state,
+        type: 'custom',
+        fields: action.payload.fields,
+        solution: action.payload.solution,
+        sudoku: action.payload.fields,
+        timer: 0,
+        history: [],
+        mistakes: 0,
+        hints: 0,
+        createCustomBoard: false,
+      };
+    }
+    // loads one of the stored sudokus
     case ACTIONS.LOAD: {
-      const fields = SUDOKUS[type][action.payload.sudokuIndex];
+      const fields = action.payload.sudoku;
       const solution = solve(fields);
       return {
         ...state,
         fields,
         solution,
-        sudokuIndex: action.payload.sudokuIndex,
+        sudoku: fields,
         timer: 0,
         history: [],
         mistakes: 0,
@@ -102,7 +122,7 @@ const reducer = (state, action) => {
           ...state,
           type: 'custom',
           fields: Array(81).fill(0),
-          sudokuIndex: null,
+          sudoku: null,
           timer: 0,
           history: [],
           mistakes: 0,
@@ -111,8 +131,8 @@ const reducer = (state, action) => {
       }
       return {
         ...state,
-        fields: SUDOKUS[type][sudokuIndex],
-        sudokuIndex: sudokuIndex,
+        fields: sudoku,
+        sudoku: sudoku,
         timer: 0,
         history: [],
         mistakes: 0,
@@ -124,7 +144,7 @@ const reducer = (state, action) => {
         ...state,
         fields: Array(81).fill(0),
         solution: [],
-        sudokuIndex: null,
+        sudoku: null,
         timer: 0,
         history: [],
         mistakes: 0,

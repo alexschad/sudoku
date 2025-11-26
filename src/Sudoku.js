@@ -8,14 +8,13 @@ import reducer, {
   withLocalStorageCache,
   initializeSudoku,
   ACTIONS,
-  SUDOKUS,
 } from './Reducer';
+import Board from './Board';
 import Field from './Field';
-import NumberSelector from './NumberSelector';
-import { rows, cols, squares } from './data';
 import { checkValid, formatTime } from './util';
 import NewGameDialog from './NewGameDialog';
 
+import CustomSudoku from './CustomSudoku';
 /**
  * Applies the spacing system to the material UI Button
  */
@@ -26,19 +25,25 @@ function Sudoku() {
   const timeOutRef = useRef(null);
 
   const [
-    { type, fields, sudokuIndex, gameState, timer, mistakes, solution, hints },
+    {
+      type,
+      fields,
+      sudoku,
+      gameState,
+      timer,
+      mistakes,
+      solution,
+      hints,
+      createCustomBoard,
+    },
     dispatch,
   ] = React.useReducer(
     withLocalStorageCache(reducer),
     undefined,
     initializeSudoku,
   );
-  const [highlight, setHightlight] = useState([]);
   const [errHighlight, setErrHightlight] = useState([]);
   const [errNumber, setErrNumber] = useState([]);
-  const [over, setOver] = useState();
-  const [clicked, setClicked] = useState(null);
-  const [selPos, setSelPos] = useState([0, 0]);
   const [isSolving, setIsSolving] = useState(false);
   const [isSolved, setIsSolved] = useState(false);
   const [showHints, setShowHints] = useState(false);
@@ -62,12 +67,12 @@ function Sudoku() {
 
   useEffect(() => {
     if (isFirstRenderRef.current) return;
-    if (sudokuIndex !== null) {
-      dispatch({ type: ACTIONS.LOAD, payload: { sudokuIndex } });
+    if (sudoku !== null) {
+      dispatch({ type: ACTIONS.LOAD, payload: { sudoku } });
     } else {
       dispatch({ type: ACTIONS.CLEAR });
     }
-  }, [sudokuIndex, isFirstRenderRef]);
+  }, [sudoku, isFirstRenderRef]);
 
   useEffect(() => {
     isFirstRenderRef.current = false;
@@ -89,33 +94,9 @@ function Sudoku() {
     setIsSolved(solved);
   }, [fields]);
 
-  // set the row, column and block highlights on mouseover
-  const mouseEnter = (index) => {
-    const newHighlight = [
-      ...rows.find((r) => r.includes(index)),
-      ...cols.find((r) => r.includes(index)),
-      ...squares.find((r) => r.includes(index)),
-    ];
-    setHightlight(newHighlight);
-    setOver(index);
-  };
-
-  // resets the highlights
-  const mouseLeave = () => {
-    setHightlight([]);
-    setOver(null);
-  };
-
   // sets a number in a field called by the number selector
   const selectNumber = (clicked, value) => {
     dispatch({ type: ACTIONS.SET_FIELD, payload: { clicked, value } });
-    setClicked(null);
-  };
-
-  // shows and places the number selector
-  const showSelector = (e, index) => {
-    setSelPos([e.clientX, e.clientY]);
-    setClicked(index);
   };
 
   useEffect(() => {
@@ -135,7 +116,10 @@ function Sudoku() {
 
   return (
     <div className="Sudoku">
-      <div className={isSolving ? 'container solving' : 'container'}>
+      <div
+        className={`container${isSolving ? ' solving' : ''}${
+          createCustomBoard ? ' hide' : ''
+        }`}>
         <header className="Sudoku-header">Sudoku</header>
         {isSolved ? (
           <div className="success" onClick={() => setIsSolved(false)}>
@@ -184,28 +168,13 @@ function Sudoku() {
               ))}
           </div>
         ) : (
-          <div className="board">
-            {fields.map((f, i) => (
-              <Field
-                key={i}
-                index={i}
-                fields={fields}
-                sudoku={
-                  type !== null && sudokuIndex !== null
-                    ? SUDOKUS[type][sudokuIndex]
-                    : null
-                }
-                showSelector={showSelector}
-                showHints={showHints}
-                mouseEnter={mouseEnter}
-                mouseLeave={mouseLeave}
-                highlight={highlight.includes(i)}
-                errHighlight={errHighlight.includes(i)}
-                errNumber={errNumber.includes(i)}
-                over={over === i}
-              />
-            ))}
-          </div>
+          <Board
+            fields={fields}
+            sudoku={sudoku}
+            showHints={showHints}
+            errHighlight={errHighlight}
+            errNumber={errNumber}
+            selectNumber={selectNumber}></Board>
         )}
         <NewGameDialog open={open} onClose={handleClose} />
         <div className="menu">
@@ -230,13 +199,9 @@ function Sudoku() {
             {showHints ? 'Hide' : 'Show'} Help
           </Button>
         </div>
-        <NumberSelector
-          selectNumber={selectNumber}
-          clicked={clicked}
-          setClicked={setClicked}
-          selPos={selPos}
-          fields={fields}
-        />
+      </div>
+      <div className={`container${!createCustomBoard ? ' hide' : ''}`}>
+        <CustomSudoku dispatch={dispatch} handleClickOpen={handleClickOpen} />
       </div>
     </div>
   );

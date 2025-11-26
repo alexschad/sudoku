@@ -30,7 +30,7 @@ npm install
 4. Start the server
 
 ```
-npm run start
+npm run dev
 ```
 
 5. Running
